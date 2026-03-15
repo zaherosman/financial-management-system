@@ -117,10 +117,13 @@ const ForecastView = ({ transactions, kpis }) => {
     }
 
     // Calcular confiança da previsão (baseado na consistência dos dados)
-    const revenueVariance = revenueData.reduce((sum, val) => sum + Math.pow(val - avgRevenue, 2), 0) / revenueData.length;
-    const revenueStdDev = Math.sqrt(revenueVariance);
-    const coefficientOfVariation = (revenueStdDev / avgRevenue) * 100;
-    const confidence = Math.max(0, Math.min(100, 100 - coefficientOfVariation));
+    let confidence = 0;
+    if (avgRevenue > 0 && revenueData.length > 0) {
+      const revenueVariance = revenueData.reduce((sum, val) => sum + Math.pow(val - avgRevenue, 2), 0) / revenueData.length;
+      const revenueStdDev = Math.sqrt(revenueVariance);
+      const coefficientOfVariation = (revenueStdDev / avgRevenue) * 100;
+      confidence = Math.max(0, Math.min(100, 100 - coefficientOfVariation));
+    }
 
     const totalProjectedRevenue = forecastRevenue.reduce((sum, item) => sum + item.value, 0);
     const totalProjectedExpenses = forecastExpenses.reduce((sum, item) => sum + item.value, 0);
@@ -130,12 +133,12 @@ const ForecastView = ({ transactions, kpis }) => {
       expenses: forecastExpenses,
       cashFlow: forecastCashFlow,
       metrics: {
-        avgMonthlyRevenue: avgRevenue,
-        avgMonthlyExpenses: avgExpenses,
-        projectedRevenue: totalProjectedRevenue,
-        projectedExpenses: totalProjectedExpenses,
-        projectedProfit: totalProjectedRevenue - totalProjectedExpenses,
-        confidence: confidence.toFixed(1)
+        avgMonthlyRevenue: avgRevenue || 0,
+        avgMonthlyExpenses: avgExpenses || 0,
+        projectedRevenue: totalProjectedRevenue || 0,
+        projectedExpenses: totalProjectedExpenses || 0,
+        projectedProfit: (totalProjectedRevenue || 0) - (totalProjectedExpenses || 0),
+        confidence: isNaN(confidence) ? 0 : confidence.toFixed(1)
       }
     };
   };
