@@ -19,6 +19,7 @@ import {
   Analytics,
   Report,
   Notification,
+  FlagFilled,
   UserAvatar
 } from '@carbon/icons-react';
 import TransactionForm from './components/TransactionForm';
@@ -27,6 +28,7 @@ import KPIDashboard from './components/KPIDashboard';
 import AdvancedAnalytics from './components/AdvancedAnalytics';
 import ForecastView from './components/ForecastView';
 import ReportsView from './components/ReportsView';
+import NotificationsPanel from './components/NotificationsPanel';
 import { transactionService, kpiService } from './services/api';
 import './App.css';
 
@@ -196,6 +198,13 @@ function App() {
               Forecast
             </SideNavLink>
             <SideNavLink
+              renderIcon={FlagFilled}
+              onClick={() => setActiveView('alerts')}
+              isActive={activeView === 'alerts'}
+            >
+              Alertas
+            </SideNavLink>
+            <SideNavLink
               renderIcon={Report}
               onClick={() => setActiveView('reports')}
               isActive={activeView === 'reports'}
@@ -216,6 +225,7 @@ function App() {
                   {activeView === 'transactions' && 'Transações'}
                   {activeView === 'analytics' && 'Análises Avançadas'}
                   {activeView === 'forecast' && 'Forecast & Projeções'}
+                  {activeView === 'alerts' && 'Alertas & Notificações'}
                   {activeView === 'reports' && 'Relatórios'}
                 </h1>
                 <p className="apptio-page-subtitle">
@@ -223,6 +233,7 @@ function App() {
                   {activeView === 'transactions' && 'Gerencie suas entradas e saídas financeiras'}
                   {activeView === 'analytics' && 'Análises detalhadas e indicadores avançados'}
                   {activeView === 'forecast' && 'Previsões e projeções financeiras baseadas em dados históricos'}
+                  {activeView === 'alerts' && 'Monitoramento inteligente da saúde financeira'}
                   {activeView === 'reports' && 'Relatórios personalizados e exportação de dados'}
                 </p>
               </div>
@@ -313,6 +324,18 @@ function App() {
                   </div>
                 )}
                 {!loading && <ForecastView transactions={transactions} kpis={kpis} />}
+              </div>
+            )}
+
+            {/* Alerts View */}
+            {activeView === 'alerts' && (
+              <div className="apptio-view">
+                {loading && (
+                  <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                    <Loading description="Analisando alertas..." withOverlay={false} />
+                  </div>
+                )}
+                {!loading && <NotificationsPanel transactions={transactions} kpis={kpis} />}
               </div>
             )}
 

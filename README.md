@@ -1,242 +1,299 @@
 # 💰 Sistema de Gestão Financeira
 
-Sistema completo de gestão financeira para empresas com registro de entradas/saídas e dashboard de KPIs para CFOs.
+Sistema profissional de gestão financeira com análises avançadas, previsões e alertas inteligentes. Desenvolvido com React, Node.js e Carbon Design System.
 
-## 🚀 Funcionalidades
+![Status](https://img.shields.io/badge/status-active-success.svg)
+![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-### Gestão de Transações
-- ✅ Registro de entradas e saídas
-- ✅ Categorização de transações
-- ✅ Edição e exclusão de transações
-- ✅ Histórico completo de movimentações
+## 🌟 Funcionalidades
 
-### KPIs para CFOs
-- 📊 **Resumo Financeiro**: Total de entradas, saídas e saldo líquido
-- 📈 **Margem Operacional**: Percentual de lucro sobre receita
-- 🔥 **Burn Rate**: Taxa de queima mensal de recursos
-- ⏱️ **Runway**: Projeção de meses até esgotamento de recursos
-- 💳 **Ticket Médio**: Valor médio de entradas e saídas
-- 📉 **Tendência Mensal**: Gráficos de evolução temporal
-- 🏷️ **Análise por Categoria**: Detalhamento de gastos e receitas
+### 📊 Dashboard Interativo
+- KPIs em tempo real (Entradas, Saídas, Saldo, Transações)
+- Widgets personalizáveis e removíveis
+- Gráficos interativos com Carbon Charts
+- Indicadores financeiros avançados
 
-## 🛠️ Tecnologias
+### 💳 Gestão de Transações
+- Adicionar, editar e excluir transações
+- Categorização automática
+- Filtros por data e tipo
+- Histórico completo
 
-### Backend
-- Node.js + Express
-- API REST
-- Armazenamento em memória (pode ser migrado para banco de dados)
+### 📈 Análises Avançadas
+- **ROI** (Return on Investment)
+- **CAC** (Customer Acquisition Cost)
+- **LTV** (Lifetime Value)
+- **Taxa de Crescimento**
+- **Margem de Lucro**
+- **Taxa de Churn**
+- Gráficos de distribuição e eficiência
+- Insights automáticos
+
+### 🔮 Forecast & Projeções
+- Previsões financeiras baseadas em dados históricos
+- Configurável: 3, 6, 12 ou 24 meses
+- Opção de sazonalidade
+- Cenários otimista e pessimista
+- Indicador de confiança
+- Recomendações estratégicas
+
+### 🔔 Alertas Inteligentes
+- Monitoramento de saldo negativo
+- Alertas de margem baixa
+- Runway crítico
+- Receita em declínio
+- Despesas crescentes
+- Concentração de receita
+- Notificações personalizáveis
+
+### 📑 Relatórios
+- Exportação em CSV e TXT
+- Filtros por período
+- Análise por categoria
+- Resumo executivo
+
+### 💾 Banco de Dados
+- Suporte a PostgreSQL
+- Fallback para armazenamento em memória
+- Migração automática
+- Backups disponíveis
+
+## 🚀 Tecnologias
 
 ### Frontend
-- React 18
-- Vite
-- Recharts (gráficos)
-- Axios (requisições HTTP)
+- **React 18** - Framework UI
+- **Vite** - Build tool
+- **Carbon Design System** - UI Components
+- **Carbon Charts** - Visualização de dados
+- **Axios** - HTTP client
+
+### Backend
+- **Node.js** - Runtime
+- **Express** - Framework web
+- **PostgreSQL** - Banco de dados (opcional)
+- **CORS** - Cross-origin support
 
 ## 📦 Instalação
 
 ### Pré-requisitos
-- Node.js 16+ instalado
+- Node.js 16+ 
 - npm ou yarn
+- PostgreSQL (opcional)
 
-### Backend
+### 1. Clonar Repositório
+```bash
+git clone https://github.com/zaherosman/financial-management-system.git
+cd financial-management-system
+```
 
+### 2. Instalar Dependências
+
+**Backend:**
 ```bash
 cd backend
 npm install
-npm start
 ```
 
-O servidor estará rodando em `http://localhost:3001`
-
-### Frontend
-
+**Frontend:**
 ```bash
 cd frontend
 npm install
+```
+
+### 3. Configurar Variáveis de Ambiente
+
+**Backend (.env):**
+```env
+PORT=3001
+NODE_ENV=development
+DATABASE_URL=postgresql://user:pass@localhost:5432/financial_db  # Opcional
+FRONTEND_URL=http://localhost:5173
+```
+
+### 4. Iniciar Aplicação
+
+**Backend:**
+```bash
+cd backend
+npm start
+```
+
+**Frontend:**
+```bash
+cd frontend
 npm run dev
 ```
 
-A aplicação estará disponível em `http://localhost:3000`
+Acesse: http://localhost:5173
 
-## 🔌 API Endpoints
+## 🌐 Deploy
 
-### Transações
+### Opção 1: Render (Gratuito e Permanente)
 
-#### Listar todas as transações
-```
-GET /api/transactions
-```
+Siga o guia completo: [DEPLOY_GRATUITO_PERMANENTE.md](DEPLOY_GRATUITO_PERMANENTE.md)
 
-#### Criar transação
-```
-POST /api/transactions
-Content-Type: application/json
+**Resumo:**
+1. Backend no Render (Web Service)
+2. Frontend no Render (Static Site)
+3. PostgreSQL no Render (Database)
 
-{
-  "type": "entrada",
-  "category": "Vendas",
-  "amount": 5000.00,
-  "description": "Venda de produtos",
-  "date": "2026-03-15"
-}
-```
+### Opção 2: Vercel + Render
 
-#### Obter transação por ID
-```
-GET /api/transactions/:id
-```
+1. Frontend no Vercel
+2. Backend no Render
+3. PostgreSQL no Render
 
-#### Atualizar transação
-```
-PUT /api/transactions/:id
-Content-Type: application/json
+Veja: [PASSO_A_PASSO.md](PASSO_A_PASSO.md)
 
-{
-  "amount": 5500.00,
-  "description": "Venda atualizada"
-}
-```
+## 📚 Documentação
 
-#### Deletar transação
-```
-DELETE /api/transactions/:id
-```
+- **[GUIA_INSTALACAO.md](GUIA_INSTALACAO.md)** - Instalação detalhada
+- **[DEPLOY_GRATUITO_PERMANENTE.md](DEPLOY_GRATUITO_PERMANENTE.md)** - Deploy gratuito
+- **[POSTGRESQL_SETUP.md](POSTGRESQL_SETUP.md)** - Configuração do PostgreSQL
+- **[CARBON_MIGRATION.md](CARBON_MIGRATION.md)** - Migração para Carbon Design
+- **[CLOUDABILITY_STYLE.md](CLOUDABILITY_STYLE.md)** - Guia de estilo
 
-### KPIs
-
-#### Obter KPIs
-```
-GET /api/kpis
-GET /api/kpis?startDate=2026-01-01&endDate=2026-12-31
-```
-
-**Resposta:**
-```json
-{
-  "resumo": {
-    "totalEntradas": "50000.00",
-    "totalSaidas": "30000.00",
-    "saldoLiquido": "20000.00",
-    "numeroTransacoes": 25
-  },
-  "indicadores": {
-    "margemOperacional": "40.00%",
-    "burnRate": "10000.00",
-    "runway": "2.0 meses",
-    "ticketMedioEntrada": "2500.00",
-    "ticketMedioSaida": "2000.00"
-  },
-  "porCategoria": {
-    "Vendas": {
-      "entradas": 50000,
-      "saidas": 0
-    },
-    "Salários": {
-      "entradas": 0,
-      "saidas": 20000
-    }
-  },
-  "tendenciaMensal": {
-    "2026-03": {
-      "entradas": 50000,
-      "saidas": 30000,
-      "saldo": 20000
-    }
-  }
-}
-```
-
-## 📊 KPIs Explicados
-
-### Margem Operacional
-Percentual de lucro sobre a receita total. Indica a eficiência operacional da empresa.
-```
-Margem = (Saldo Líquido / Total Entradas) × 100
-```
-
-### Burn Rate
-Taxa média mensal de gastos. Importante para startups e empresas em crescimento.
-```
-Burn Rate = Total Saídas / Número de Meses
-```
-
-### Runway
-Estimativa de quantos meses a empresa pode operar com o saldo atual.
-```
-Runway = Saldo Líquido / Burn Rate Mensal
-```
-
-### Ticket Médio
-Valor médio das transações, útil para análise de padrões.
-```
-Ticket Médio = Total / Número de Transações
-```
-
-## 🎨 Interface
-
-### Tela de Transações
-- Formulário intuitivo para adicionar/editar transações
-- Lista de transações com filtros visuais
-- Ações rápidas de edição e exclusão
-
-### Dashboard de KPIs
-- Cards com métricas principais
-- Gráficos de linha para tendências mensais
-- Gráficos de barra para análise por categoria
-- Detalhamento completo por categoria
-
-## 🔄 Próximas Melhorias
-
-- [ ] Integração com banco de dados (PostgreSQL/MongoDB)
-- [ ] Autenticação e autorização de usuários
-- [ ] Exportação de relatórios (PDF/Excel)
-- [ ] Filtros avançados e busca
-- [ ] Múltiplas empresas/projetos
-- [ ] Previsões e projeções financeiras
-- [ ] Integração com APIs bancárias
-- [ ] Notificações e alertas
-- [ ] Modo escuro
-- [ ] Aplicativo mobile
-
-## 📝 Estrutura do Projeto
+## 🎯 Estrutura do Projeto
 
 ```
 financial-management-system/
 ├── backend/
-│   ├── server.js           # Servidor Express e rotas
-│   ├── package.json        # Dependências do backend
-│   └── .env.example        # Variáveis de ambiente
-│
+│   ├── server.js           # Servidor Express
+│   ├── db.js              # Configuração PostgreSQL
+│   ├── package.json
+│   └── .env.example
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── TransactionForm.jsx    # Formulário de transações
-│   │   │   ├── TransactionList.jsx    # Lista de transações
-│   │   │   └── KPIDashboard.jsx       # Dashboard de KPIs
+│   │   │   ├── KPIDashboard.jsx
+│   │   │   ├── TransactionForm.jsx
+│   │   │   ├── TransactionList.jsx
+│   │   │   ├── AdvancedAnalytics.jsx
+│   │   │   ├── ForecastView.jsx
+│   │   │   ├── NotificationsPanel.jsx
+│   │   │   └── ReportsView.jsx
 │   │   ├── services/
-│   │   │   └── api.js                 # Serviços de API
-│   │   ├── App.jsx                    # Componente principal
-│   │   ├── App.css                    # Estilos
-│   │   └── main.jsx                   # Entry point
-│   ├── index.html
-│   ├── vite.config.js
-│   └── package.json
-│
+│   │   │   └── api.js
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   └── main.jsx
+│   ├── package.json
+│   └── vite.config.js
 └── README.md
 ```
 
+## 🔧 API Endpoints
+
+### Transações
+- `GET /api/transactions` - Listar todas
+- `POST /api/transactions` - Criar nova
+- `GET /api/transactions/:id` - Buscar por ID
+- `PUT /api/transactions/:id` - Atualizar
+- `DELETE /api/transactions/:id` - Deletar
+
+### KPIs
+- `GET /api/kpis` - Obter KPIs
+  - Query params: `startDate`, `endDate`, `grouping`
+
+### Health Check
+- `GET /api/health` - Status da API
+
+## 📊 Indicadores Disponíveis
+
+### Financeiros
+- Total de Entradas
+- Total de Saídas
+- Saldo Líquido
+- Número de Transações
+
+### Performance
+- Margem Operacional
+- Burn Rate
+- Runway
+- Ticket Médio
+
+### Avançados
+- ROI (Return on Investment)
+- CAC (Customer Acquisition Cost)
+- LTV (Lifetime Value)
+- Taxa de Crescimento
+- Taxa de Churn
+- Eficiência Operacional
+
+## 🎨 Design System
+
+Baseado no **IBM Carbon Design System** com tema personalizado Apptio Cloudability:
+
+- **Cores Primárias**: Laranja (#ff6b35), Azul (#4a90e2)
+- **Tipografia**: IBM Plex Sans
+- **Componentes**: Carbon React
+- **Gráficos**: Carbon Charts
+
+## 🔐 Segurança
+
+- CORS configurado
+- Validação de dados no backend
+- Sanitização de inputs
+- SSL/HTTPS em produção
+- Variáveis de ambiente para secrets
+
+## 🧪 Testes
+
+```bash
+# Backend
+cd backend
+npm test
+
+# Frontend
+cd frontend
+npm test
+```
+
+## 📈 Roadmap
+
+- [x] Dashboard básico
+- [x] Gestão de transações
+- [x] KPIs financeiros
+- [x] Análises avançadas
+- [x] Forecast e projeções
+- [x] Alertas inteligentes
+- [x] Relatórios e exportação
+- [x] PostgreSQL
+- [ ] Autenticação de usuários
+- [ ] Multi-tenancy
+- [ ] API REST completa
+- [ ] Testes automatizados
+- [ ] CI/CD
+- [ ] Mobile app
+
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests.
+1. Fork o projeto
+2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request
 
-## 📄 Licença
+## 📝 Licença
 
-MIT License - sinta-se livre para usar este projeto.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ## 👨‍💻 Autor
 
-Desenvolvido com ❤️ para facilitar a gestão financeira empresarial.
+**Zaher Osman**
+- GitHub: [@zaherosman](https://github.com/zaherosman)
+- Repositório: [financial-management-system](https://github.com/zaherosman/financial-management-system)
+
+## 🙏 Agradecimentos
+
+- IBM Carbon Design System
+- Render.com
+- Vercel
+- Comunidade Open Source
 
 ---
 
-**Nota**: Este sistema usa armazenamento em memória. Para produção, recomenda-se implementar um banco de dados persistente.
+**Made with ❤️ and Bob**
+
+Para suporte e dúvidas, abra uma [issue](https://github.com/zaherosman/financial-management-system/issues).
