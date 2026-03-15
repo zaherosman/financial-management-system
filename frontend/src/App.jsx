@@ -12,15 +12,21 @@ import {
   InlineNotification,
   Loading
 } from '@carbon/react';
-import { 
-  Dashboard, 
+import {
+  Dashboard,
   Receipt,
+  ChartLine,
+  Analytics,
+  Report,
   Notification,
-  UserAvatar 
+  UserAvatar
 } from '@carbon/icons-react';
 import TransactionForm from './components/TransactionForm';
 import TransactionList from './components/TransactionList';
 import KPIDashboard from './components/KPIDashboard';
+import AdvancedAnalytics from './components/AdvancedAnalytics';
+import ForecastView from './components/ForecastView';
+import ReportsView from './components/ReportsView';
 import { transactionService, kpiService } from './services/api';
 import './App.css';
 
@@ -175,6 +181,27 @@ function App() {
             >
               Transações
             </SideNavLink>
+            <SideNavLink
+              renderIcon={Analytics}
+              onClick={() => setActiveView('analytics')}
+              isActive={activeView === 'analytics'}
+            >
+              Análises
+            </SideNavLink>
+            <SideNavLink
+              renderIcon={ChartLine}
+              onClick={() => setActiveView('forecast')}
+              isActive={activeView === 'forecast'}
+            >
+              Forecast
+            </SideNavLink>
+            <SideNavLink
+              renderIcon={Report}
+              onClick={() => setActiveView('reports')}
+              isActive={activeView === 'reports'}
+            >
+              Relatórios
+            </SideNavLink>
           </SideNavItems>
         </SideNav>
 
@@ -185,12 +212,18 @@ function App() {
             <div className="apptio-page-header">
               <div>
                 <h1 className="apptio-page-title">
-                  {activeView === 'dashboard' ? 'Dashboard' : 'Transações'}
+                  {activeView === 'dashboard' && 'Dashboard'}
+                  {activeView === 'transactions' && 'Transações'}
+                  {activeView === 'analytics' && 'Análises Avançadas'}
+                  {activeView === 'forecast' && 'Forecast & Projeções'}
+                  {activeView === 'reports' && 'Relatórios'}
                 </h1>
                 <p className="apptio-page-subtitle">
-                  {activeView === 'dashboard' 
-                    ? 'Visão geral do desempenho financeiro' 
-                    : 'Gerencie suas entradas e saídas financeiras'}
+                  {activeView === 'dashboard' && 'Visão geral do desempenho financeiro'}
+                  {activeView === 'transactions' && 'Gerencie suas entradas e saídas financeiras'}
+                  {activeView === 'analytics' && 'Análises detalhadas e indicadores avançados'}
+                  {activeView === 'forecast' && 'Previsões e projeções financeiras baseadas em dados históricos'}
+                  {activeView === 'reports' && 'Relatórios personalizados e exportação de dados'}
                 </p>
               </div>
             </div>
@@ -256,6 +289,42 @@ function App() {
                   onDelete={handleDeleteTransaction}
                   onEdit={handleEditTransaction}
                 />
+              </div>
+            )}
+
+            {/* Analytics View */}
+            {activeView === 'analytics' && (
+              <div className="apptio-view">
+                {loading && (
+                  <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                    <Loading description="Carregando análises..." withOverlay={false} />
+                  </div>
+                )}
+                {!loading && <AdvancedAnalytics transactions={transactions} kpis={kpis} />}
+              </div>
+            )}
+
+            {/* Forecast View */}
+            {activeView === 'forecast' && (
+              <div className="apptio-view">
+                {loading && (
+                  <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                    <Loading description="Gerando previsões..." withOverlay={false} />
+                  </div>
+                )}
+                {!loading && <ForecastView transactions={transactions} kpis={kpis} />}
+              </div>
+            )}
+
+            {/* Reports View */}
+            {activeView === 'reports' && (
+              <div className="apptio-view">
+                {loading && (
+                  <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                    <Loading description="Gerando relatórios..." withOverlay={false} />
+                  </div>
+                )}
+                {!loading && <ReportsView transactions={transactions} />}
               </div>
             )}
           </div>
