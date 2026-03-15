@@ -1,0 +1,463 @@
+/* Apptio Cloudability Style - Professional & Clean */
+
+.apptio-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--apptio-bg-primary);
+}
+
+/* Header Styles */
+.apptio-header {
+  background: white !important;
+  border-bottom: 1px solid var(--apptio-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 8000;
+}
+
+.apptio-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.apptio-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.apptio-logo-text {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--apptio-text-primary);
+}
+
+.apptio-header .cds--header__action {
+  color: var(--apptio-text-secondary);
+}
+
+.apptio-header .cds--header__action:hover {
+  background-color: var(--apptio-bg-tertiary);
+  color: var(--apptio-orange);
+}
+
+/* Sidebar Styles */
+.apptio-sidenav {
+  background-color: white !important;
+  border-right: 1px solid var(--apptio-border);
+  padding-top: 1rem;
+}
+
+.apptio-sidenav .cds--side-nav__link {
+  color: var(--apptio-text-secondary);
+  border-radius: 6px;
+  margin: 0.25rem 0.75rem;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.apptio-sidenav .cds--side-nav__link:hover {
+  background-color: var(--apptio-bg-tertiary);
+  color: var(--apptio-text-primary);
+}
+
+.apptio-sidenav .cds--side-nav__link--current,
+.apptio-sidenav .cds--side-nav__link[aria-current="page"] {
+  background-color: #fff5f0;
+  color: var(--apptio-orange);
+  font-weight: 600;
+  border-left: 3px solid var(--apptio-orange);
+}
+
+.apptio-sidenav .cds--side-nav__link--current::before {
+  display: none;
+}
+
+/* Content Area */
+.apptio-content {
+  background-color: var(--apptio-bg-primary);
+  margin-left: 256px;
+  padding: 0;
+  min-height: calc(100vh - 48px);
+}
+
+.apptio-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Page Header */
+.apptio-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--apptio-border);
+}
+
+.apptio-page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--apptio-text-primary);
+  margin: 0 0 0.25rem 0;
+}
+
+.apptio-page-subtitle {
+  font-size: 0.875rem;
+  color: var(--apptio-text-secondary);
+  margin: 0;
+}
+
+/* View Styles */
+.apptio-view {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Widget/Card Styles */
+.apptio-widget {
+  background-color: white;
+  border: 1px solid var(--apptio-border);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.apptio-widget-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--apptio-border);
+  background-color: var(--apptio-bg-tertiary);
+}
+
+.apptio-widget-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--apptio-text-primary);
+  margin: 0;
+}
+
+.apptio-widget-content {
+  padding: 1.5rem;
+}
+
+/* KPI Card Styles */
+.apptio-kpi-card {
+  background: white;
+  border: 1px solid var(--apptio-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.apptio-kpi-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.apptio-kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+.apptio-kpi-card.success::before {
+  background: var(--apptio-green);
+}
+
+.apptio-kpi-card.danger::before {
+  background: var(--apptio-red);
+}
+
+.apptio-kpi-card.info::before {
+  background: var(--apptio-blue);
+}
+
+.apptio-kpi-card.warning::before {
+  background: var(--apptio-orange);
+}
+
+.apptio-kpi-label {
+  font-size: 0.75rem;
+  color: var(--apptio-text-secondary);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.apptio-kpi-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--apptio-text-primary);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.apptio-kpi-change {
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 500;
+}
+
+.apptio-kpi-change.positive {
+  color: var(--apptio-green);
+}
+
+.apptio-kpi-change.negative {
+  color: var(--apptio-red);
+}
+
+.apptio-kpi-change.neutral {
+  color: var(--apptio-text-secondary);
+}
+
+/* Chart Container */
+.apptio-chart-widget {
+  background-color: white;
+  border: 1px solid var(--apptio-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.apptio-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--apptio-border-light);
+}
+
+.apptio-chart-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--apptio-text-primary);
+  margin: 0;
+}
+
+.apptio-chart-subtitle {
+  font-size: 0.875rem;
+  color: var(--apptio-text-secondary);
+  margin: 0.25rem 0 0 0;
+}
+
+/* Table Enhancements */
+.apptio-table-widget {
+  background-color: white;
+  border: 1px solid var(--apptio-border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.apptio-table-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--apptio-border);
+  background-color: var(--apptio-bg-tertiary);
+}
+
+.apptio-table-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--apptio-text-primary);
+  margin: 0 0 0.25rem 0;
+}
+
+.apptio-table-subtitle {
+  font-size: 0.875rem;
+  color: var(--apptio-text-secondary);
+  margin: 0;
+}
+
+/* Form Enhancements */
+.apptio-form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.apptio-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Badge Styles */
+.apptio-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.apptio-badge.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.apptio-badge.danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.apptio-badge.info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.apptio-badge.warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* Empty State */
+.apptio-empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border: 1px solid var(--apptio-border);
+  border-radius: 8px;
+  margin-top: 1.5rem;
+}
+
+.apptio-empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.3;
+}
+
+.apptio-empty-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--apptio-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.apptio-empty-text {
+  font-size: 0.875rem;
+  color: var(--apptio-text-secondary);
+}
+
+/* Loading States */
+.apptio-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  color: var(--apptio-text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 1056px) {
+  .apptio-content {
+    margin-left: 0;
+  }
+  
+  .apptio-container {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .apptio-container {
+    padding: 1rem;
+  }
+
+  .apptio-page-title {
+    font-size: 1.5rem;
+  }
+  
+  .apptio-kpi-value {
+    font-size: 1.5rem;
+  }
+
+  .apptio-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .apptio-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+/* Notification Enhancements */
+.cds--inline-notification {
+  border-radius: 6px;
+}
+
+.cds--inline-notification--error {
+  background-color: #f8d7da;
+  border-left-color: var(--apptio-red);
+}
+
+.cds--inline-notification--success {
+  background-color: #d4edda;
+  border-left-color: var(--apptio-green);
+}
+
+/* Grid System */
+.apptio-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.apptio-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.apptio-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.apptio-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1200px) {
+  .apptio-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .apptio-grid-2,
+  .apptio-grid-3,
+  .apptio-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Made with Bob - Apptio Cloudability Style */
+
+/* Made with Bob */

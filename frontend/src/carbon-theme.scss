@@ -1,0 +1,237 @@
+@use '@carbon/react';
+
+// Apptio Cloudability Light Theme
+:root {
+  // Cloudability Color Palette (Light)
+  --apptio-bg-primary: #f5f7fa;
+  --apptio-bg-secondary: #ffffff;
+  --apptio-bg-tertiary: #fafbfc;
+  --apptio-border: #e1e4e8;
+  --apptio-border-light: #f0f2f5;
+  --apptio-text-primary: #24292e;
+  --apptio-text-secondary: #586069;
+  --apptio-text-tertiary: #6a737d;
+  
+  // Apptio Brand Colors
+  --apptio-orange: #ff6b35;
+  --apptio-blue: #0366d6;
+  --apptio-blue-light: #4a90e2;
+  --apptio-green: #28a745;
+  --apptio-red: #d73a49;
+  --apptio-purple: #6f42c1;
+  --apptio-yellow: #ffd33d;
+  
+  // Chart Colors
+  --apptio-chart-blue: #4a90e2;
+  --apptio-chart-orange: #ff6b35;
+  --apptio-chart-green: #28a745;
+  --apptio-chart-red: #d73a49;
+  --apptio-chart-purple: #8b5cf6;
+  --apptio-chart-teal: #14b8a6;
+}
+
+body {
+  background-color: var(--apptio-bg-primary);
+  color: var(--apptio-text-primary);
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Override Carbon styles for light theme
+.cds--content {
+  background-color: var(--apptio-bg-primary);
+}
+
+.cds--tile {
+  background-color: var(--apptio-bg-secondary);
+  border: 1px solid var(--apptio-border);
+  border-radius: 8px;
+  color: var(--apptio-text-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.cds--data-table {
+  background-color: var(--apptio-bg-secondary);
+  border: 1px solid var(--apptio-border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.cds--data-table thead {
+  background-color: var(--apptio-bg-tertiary);
+  border-bottom: 2px solid var(--apptio-border);
+}
+
+.cds--data-table th {
+  color: var(--apptio-text-secondary);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cds--data-table td {
+  color: var(--apptio-text-primary);
+  border-bottom: 1px solid var(--apptio-border-light);
+}
+
+.cds--data-table tbody tr:hover {
+  background-color: var(--apptio-bg-tertiary);
+}
+
+.cds--form-item {
+  margin-bottom: 1.5rem;
+}
+
+.cds--text-input,
+.cds--select-input,
+.cds--text-area,
+.cds--number input {
+  background-color: var(--apptio-bg-secondary);
+  border: 1px solid var(--apptio-border);
+  color: var(--apptio-text-primary);
+  border-radius: 6px;
+}
+
+.cds--text-input:focus,
+.cds--select-input:focus,
+.cds--text-area:focus,
+.cds--number input:focus {
+  outline: 2px solid var(--apptio-blue);
+  outline-offset: 2px;
+  border-color: var(--apptio-blue);
+}
+
+.cds--label {
+  color: var(--apptio-text-secondary);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.cds--btn--primary {
+  background-color: var(--apptio-orange);
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  color: white;
+}
+
+.cds--btn--primary:hover {
+  background-color: #e55a2b;
+}
+
+.cds--btn--secondary {
+  background-color: var(--apptio-bg-secondary);
+  border: 1px solid var(--apptio-border);
+  color: var(--apptio-text-primary);
+  border-radius: 6px;
+}
+
+.cds--btn--secondary:hover {
+  background-color: var(--apptio-bg-tertiary);
+}
+
+.cds--btn--danger--ghost {
+  color: var(--apptio-red);
+}
+
+.cds--btn--ghost {
+  color: var(--apptio-blue);
+}
+
+.cds--tabs {
+  background-color: transparent;
+  border-bottom: 1px solid var(--apptio-border);
+}
+
+.cds--tabs__nav {
+  background-color: transparent;
+}
+
+.cds--tabs__nav-item {
+  color: var(--apptio-text-secondary);
+  border-bottom: 2px solid transparent;
+}
+
+.cds--tabs__nav-item:hover {
+  color: var(--apptio-text-primary);
+}
+
+.cds--tabs__nav-item--selected {
+  color: var(--apptio-orange);
+  border-bottom-color: var(--apptio-orange);
+}
+
+.cds--tab-content {
+  background-color: transparent;
+  padding: 2rem 0;
+}
+
+.cds--inline-notification {
+  border-radius: 6px;
+  border-left-width: 4px;
+}
+
+// Charts light theme
+.cds--cc--chart-wrapper {
+  background-color: var(--apptio-bg-secondary);
+  border: 1px solid var(--apptio-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.cds--cc--chart-wrapper svg text {
+  fill: var(--apptio-text-secondary);
+}
+
+.cds--cc--chart-wrapper .cds--cc--title {
+  color: var(--apptio-text-primary);
+  font-weight: 600;
+}
+
+// Tag styles
+.cds--tag {
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.cds--tag--green {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.cds--tag--red {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--apptio-bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--apptio-border);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--apptio-text-tertiary);
+}
+
+// Made with Bob - Apptio Cloudability Style
