@@ -4,9 +4,9 @@ import {
   Button,
   Toggle
 } from '@carbon/react';
-import { 
-  Warning, 
-  CheckmarkFilled, 
+import {
+  WarningAlt,
+  CheckmarkFilled,
   ErrorFilled,
   Information
 } from '@carbon/icons-react';
@@ -196,7 +196,7 @@ const NotificationsPanel = ({ transactions, kpis }) => {
   const getIcon = (type) => {
     switch(type) {
       case 'error': return <ErrorFilled size={20} />;
-      case 'warning': return <Warning size={20} />;
+      case 'warning': return <WarningAlt size={20} />;
       case 'success': return <CheckmarkFilled size={20} />;
       case 'info': return <Information size={20} />;
       default: return <Information size={20} />;

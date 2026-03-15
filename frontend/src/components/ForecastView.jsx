@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Grid, Column, Select, SelectItem, Toggle } from '@carbon/react';
 import { LineChart, SimpleBarChart } from '@carbon/charts-react';
-import { TrendUp, TrendDown, Warning } from '@carbon/icons-react';
+import { ArrowUp, ArrowDown, WarningAlt } from '@carbon/icons-react';
 
 const ForecastView = ({ transactions, kpis }) => {
   const [forecastPeriod, setForecastPeriod] = useState('3');
@@ -233,7 +233,7 @@ const ForecastView = ({ transactions, kpis }) => {
           <div className="apptio-kpi-label">Receita Projetada</div>
           <div className="apptio-kpi-value">{formatCurrency(forecast.metrics.projectedRevenue)}</div>
           <div className="apptio-kpi-change positive">
-            <TrendUp size={16} />
+            <ArrowUp size={16} />
             <span>Próximos {forecastPeriod} meses</span>
           </div>
         </div>
@@ -242,7 +242,7 @@ const ForecastView = ({ transactions, kpis }) => {
           <div className="apptio-kpi-label">Despesas Projetadas</div>
           <div className="apptio-kpi-value">{formatCurrency(forecast.metrics.projectedExpenses)}</div>
           <div className="apptio-kpi-change negative">
-            <TrendDown size={16} />
+            <ArrowDown size={16} />
             <span>Próximos {forecastPeriod} meses</span>
           </div>
         </div>
@@ -251,7 +251,7 @@ const ForecastView = ({ transactions, kpis }) => {
           <div className="apptio-kpi-label">Lucro Projetado</div>
           <div className="apptio-kpi-value">{formatCurrency(forecast.metrics.projectedProfit)}</div>
           <div className={`apptio-kpi-change ${forecast.metrics.projectedProfit >= 0 ? 'positive' : 'negative'}`}>
-            {forecast.metrics.projectedProfit >= 0 ? <TrendUp size={16} /> : <TrendDown size={16} />}
+            {forecast.metrics.projectedProfit >= 0 ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
             <span>{forecast.metrics.projectedProfit >= 0 ? 'Superávit' : 'Déficit'}</span>
           </div>
         </div>
@@ -312,7 +312,7 @@ const ForecastView = ({ transactions, kpis }) => {
             <Column lg={8} md={4} sm={4}>
               <div style={{ padding: '1.5rem', background: '#e7f5ff', border: '1px solid #339af0', borderRadius: '8px', marginBottom: '1rem' }}>
                 <h4 style={{ margin: '0 0 1rem 0', color: '#1971c2', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <TrendUp size={20} />
+                  <ArrowUp size={20} />
                   Cenário Otimista (+20%)
                 </h4>
                 <div style={{ display: 'grid', gap: '0.5rem' }}>
@@ -333,7 +333,7 @@ const ForecastView = ({ transactions, kpis }) => {
             <Column lg={8} md={4} sm={4}>
               <div style={{ padding: '1.5rem', background: '#fff3cd', border: '1px solid #ffc107', borderRadius: '8px', marginBottom: '1rem' }}>
                 <h4 style={{ margin: '0 0 1rem 0', color: '#856404', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Warning size={20} />
+                  <WarningAlt size={20} />
                   Cenário Pessimista (-20%)
                 </h4>
                 <div style={{ display: 'grid', gap: '0.5rem' }}>
