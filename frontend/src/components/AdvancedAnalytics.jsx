@@ -1,6 +1,6 @@
 import { Grid, Column } from '@carbon/react';
 import { LineChart, DonutChart, SimpleBarChart } from '@carbon/charts-react';
-import { TrendUp, TrendDown, Subtract } from '@carbon/icons-react';
+import { ArrowUp, ArrowDown, Subtract } from '@carbon/icons-react';
 
 const AdvancedAnalytics = ({ transactions, kpis }) => {
   const formatCurrency = (value) => {
@@ -151,8 +151,8 @@ const AdvancedAnalytics = ({ transactions, kpis }) => {
   };
 
   const getTrendIcon = (value) => {
-    if (value > 0) return <TrendUp size={20} style={{ color: '#28a745' }} />;
-    if (value < 0) return <TrendDown size={20} style={{ color: '#d73a49' }} />;
+    if (value > 0) return <ArrowUp size={20} style={{ color: '#28a745' }} />;
+    if (value < 0) return <ArrowDown size={20} style={{ color: '#d73a49' }} />;
     return <Subtract size={20} style={{ color: '#6c757d' }} />;
   };
 
