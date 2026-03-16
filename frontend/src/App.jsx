@@ -9,6 +9,8 @@ import {
   SideNav,
   SideNavItems,
   SideNavLink,
+  SideNavMenu,
+  SideNavMenuItem,
   InlineNotification,
   Loading
 } from '@carbon/react';
@@ -18,7 +20,9 @@ import {
   Idea,
   Settings,
   Notification,
-  UserAvatar
+  UserAvatar,
+  Integration,
+  Receipt
 } from '@carbon/icons-react';
 import TransactionForm from './components/TransactionForm';
 import TransactionList from './components/TransactionList';
@@ -161,8 +165,8 @@ function App() {
         </Header>
 
         {/* Sidebar */}
-        <SideNav 
-          aria-label="Side navigation" 
+        <SideNav
+          aria-label="Side navigation"
           expanded={true}
           isFixedNav
           className="apptio-sidenav"
@@ -189,13 +193,26 @@ function App() {
             >
               Insights
             </SideNavLink>
-            <SideNavLink
+            <SideNavMenu
               renderIcon={Settings}
-              onClick={() => setActiveView('settings')}
-              isActive={activeView === 'settings'}
+              title="Settings"
+              defaultExpanded={activeView === 'integrations' || activeView === 'transactions'}
             >
-              Settings
-            </SideNavLink>
+              <SideNavMenuItem
+                onClick={() => setActiveView('integrations')}
+                isActive={activeView === 'integrations'}
+              >
+                <Integration style={{ marginRight: '8px' }} />
+                Integrações
+              </SideNavMenuItem>
+              <SideNavMenuItem
+                onClick={() => setActiveView('transactions')}
+                isActive={activeView === 'transactions'}
+              >
+                <Receipt style={{ marginRight: '8px' }} />
+                Transações
+              </SideNavMenuItem>
+            </SideNavMenu>
           </SideNavItems>
         </SideNav>
 
@@ -209,13 +226,15 @@ function App() {
                   {activeView === 'home' && 'Home'}
                   {activeView === 'plan' && 'Plan'}
                   {activeView === 'insights' && 'Insights'}
-                  {activeView === 'settings' && 'Settings'}
+                  {activeView === 'integrations' && 'Integrações'}
+                  {activeView === 'transactions' && 'Transações'}
                 </h1>
                 <p className="apptio-page-subtitle">
                   {activeView === 'home' && 'Visão geral do desempenho financeiro'}
                   {activeView === 'plan' && 'Previsões e projeções financeiras'}
                   {activeView === 'insights' && 'Análises, relatórios e alertas inteligentes'}
-                  {activeView === 'settings' && 'Configurações, integrações e transações'}
+                  {activeView === 'integrations' && 'Conecte suas contas bancárias via Open Finance'}
+                  {activeView === 'transactions' && 'Gerencie suas transações manualmente'}
                 </p>
               </div>
             </div>
@@ -286,22 +305,26 @@ function App() {
               </div>
             )}
 
-            {/* Settings View - Transactions & Integrations */}
-            {activeView === 'settings' && (
+            {/* Integrations View - Open Finance */}
+            {activeView === 'integrations' && (
               <div className="apptio-view">
-                {/* Open Finance Integration */}
                 <BankConnection
                   onTransactionsImported={async () => {
                     await loadTransactions();
                     await loadKPIs();
                   }}
                 />
+              </div>
+            )}
 
+            {/* Transactions View - Manual Entry & List */}
+            {activeView === 'transactions' && (
+              <div className="apptio-view">
                 {/* Manual Transaction Entry */}
-                <div className="apptio-widget" style={{ marginTop: '2rem' }}>
+                <div className="apptio-widget">
                   <div className="apptio-widget-header">
                     <h3 className="apptio-widget-title">
-                      ✏️ {editingTransaction ? 'Editar Transação' : 'Adicionar Transação Manualmente'}
+                      ✏️ {editingTransaction ? 'Editar Transação' : 'Adicionar Transação'}
                     </h3>
                   </div>
                   <div className="apptio-widget-content">
