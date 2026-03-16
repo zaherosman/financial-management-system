@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
 const openFinanceService = require('./services/openFinance');
+const pluggyService = require('./services/pluggyService');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -267,6 +268,141 @@ app.get('/api/kpis', (req, res) => {
   };
 
   res.json(kpis);
+});
+
+// ============================================
+// PLUGGY - Open Finance Integration
+// ============================================
+
+// Criar Connect Token para iniciar fluxo de conexão
+app.post('/api/pluggy/connect-token', async (req, res) => {
+  try {
+    const result = await pluggyService.createConnectToken();
+    res.json(result);
+  } catch (error) {
+    console.error('Erro ao criar connect token:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Obter informações de um item (conta conectada)
+app.get('/api/pluggy/items/:itemId', async (req, res) => {
+  try {
+    const result = await pluggyService.getItem(req.params.itemId);
+    res.json(result);
+  } catch (error) {
+    console.error('Erro ao buscar item:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Obter contas de um item
+app.get('/api/pluggy/items/:itemId/accounts', async (req, res) => {
+  try {
+    const result = await pluggyService.getAccounts(req.params.itemId);
+    res.json(result);
+  } catch (error) {
+    console.error('Erro ao buscar contas:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Sincronizar e importar transações de um item
+app.post('/api/pluggy/items/:itemId/sync', async (req, res) => {
+  try {
+    const { from, to, pageSize } = req.body;
+    
+    // Sincronizar transações do Pluggy
+    const result = await pluggyService.syncTransactions(req.params.itemId, {
+      from,
+      to,
+      pageSize
+    });
+    
+    if (!result.success) {
+      return res.status(500).json({ error: 'Falha ao sincronizar transações' });
+    }
+    
+    // Adicionar transações ao sistema
+    const importedTransactions = result.transactions.map(tx => ({
+      id: uuidv4(),
+      type: tx.type === 'income' ? 'entrada' : 'saida',
+      category: tx.category,
+      amount: tx.amount,
+      description: `${tx.description} (${tx.bankName})`,
+      date: tx.date,
+      source: 'pluggy',
+      pluggyData: {
+        accountId: tx.accountId,
+        accountName: tx.accountName,
+        bankName: tx.bankName,
+        transactionId: tx.pluggyTransactionId
+      },
+      createdAt: new Date().toISOString()
+    }));
+    
+    // Evitar duplicatas - verificar se transação já existe
+    const existingPluggyIds = transactions
+      .filter(t => t.source === 'pluggy' && t.pluggyData)
+      .map(t => t.pluggyData.transactionId);
+    
+    const newTransactions = importedTransactions.filter(
+      tx => !existingPluggyIds.includes(tx.pluggyData.transactionId)
+    );
+    
+    transactions.push(...newTransactions);
+    saveTransactions(transactions);
+    
+    res.json({
+      success: true,
+      imported: newTransactions.length,
+      total: result.total,
+      duplicates: importedTransactions.length - newTransactions.length,
+      transactions: newTransactions
+    });
+  } catch (error) {
+    console.error('Erro ao sincronizar transações:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Deletar conexão (item)
+app.delete('/api/pluggy/items/:itemId', async (req, res) => {
+  try {
+    const result = await pluggyService.deleteItem(req.params.itemId);
+    
+    // Remover transações associadas ao item
+    const itemTransactions = transactions.filter(
+      t => t.source === 'pluggy' &&
+      t.pluggyData &&
+      t.pluggyData.accountId
+    );
+    
+    transactions = transactions.filter(
+      t => !(t.source === 'pluggy' && t.pluggyData && t.pluggyData.accountId)
+    );
+    
+    saveTransactions(transactions);
+    
+    res.json({
+      ...result,
+      transactionsRemoved: itemTransactions.length
+    });
+  } catch (error) {
+    console.error('Erro ao deletar item:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Listar conectores disponíveis (bancos)
+app.get('/api/pluggy/connectors', async (req, res) => {
+  try {
+    const result = await pluggyService.getConnectors();
+    res.json(result);
+  } catch (error) {
+    console.error('Erro ao buscar conectores:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Iniciar servidor

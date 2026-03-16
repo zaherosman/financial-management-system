@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { 
   Button, 
-  Modal,
   Tile,
   InlineNotification,
   Loading,
@@ -11,72 +10,26 @@ import {
   Connect, 
   Checkmark, 
   Warning,
-  Renew
+  Renew,
+  TrashCan
 } from '@carbon/icons-react';
+import { PluggyConnect } from 'react-pluggy-connect';
 
 const BankConnection = ({ onTransactionsImported }) => {
-  const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [connections, setConnections] = useState([]);
+  const [connectToken, setConnectToken] = useState(null);
 
-  const connectBank = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // 1. Obter token do backend
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/open-finance/connect-token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Erro ao obter token de conexão');
-      }
-
-      const { token } = await response.json();
-
-      // 2. Verificar se o Pluggy SDK está carregado
-      if (!window.PluggyConnect) {
-        throw new Error('SDK do Pluggy não carregado. Verifique a configuração.');
-      }
-
-      // 3. Abrir widget do Pluggy
-      const pluggyConnect = new window.PluggyConnect({
-        connectToken: token,
-        onSuccess: async (itemData) => {
-          console.log('Banco conectado:', itemData);
-          await syncTransactions(itemData.item.id);
-          setShowModal(false);
-        },
-        onError: (error) => {
-          console.error('Erro ao conectar:', error);
-          setError('Erro ao conectar com o banco: ' + error.message);
-        },
-        onClose: () => {
-          setLoading(false);
-        }
-      });
-
-      pluggyConnect.open();
-    } catch (err) {
-      console.error('Erro:', err);
-      setError(err.message);
-      setLoading(false);
-    }
-  };
-
-  const syncTransactions = async (itemId) => {
+  // Obter token de conexão do backend
+  const getConnectToken = async () => {
     try {
       setLoading(true);
       setError(null);
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/open-finance/sync/${itemId}`,
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/pluggy/connect-token`,
         {
           method: 'POST',
           headers: {
@@ -86,24 +39,108 @@ const BankConnection = ({ onTransactionsImported }) => {
       );
 
       if (!response.ok) {
-        throw new Error('Erro ao sincronizar transações');
+        throw new Error('Erro ao obter token de conexão');
       }
 
       const data = await response.json();
+      setConnectToken(data.accessToken);
+      setLoading(false);
+    } catch (err) {
+      console.error('Erro:', err);
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  // Callback quando conexão é bem-sucedida
+  const onSuccess = async (itemData) => {
+    console.log('Banco conectado:', itemData);
+    setConnectToken(null); // Fechar o widget
+    await syncTransactions(itemData.item.id);
+  };
+
+  // Callback quando há erro
+  const onError = (error) => {
+    console.error('Erro ao conectar:', error);
+    setError('Erro ao conectar com o banco: ' + error.message);
+    setConnectToken(null);
+  };
+
+  // Callback quando widget é fechado
+  const onClose = () => {
+    setConnectToken(null);
+    setLoading(false);
+  };
+
+  // Sincronizar transações de um item
+  const syncTransactions = async (itemId) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Obter informações do item
+      const itemResponse = await fetch(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/pluggy/items/${itemId}`
+      );
+
+      if (!itemResponse.ok) {
+        throw new Error('Erro ao buscar informações da conta');
+      }
+
+      const itemData = await itemResponse.json();
+
+      // Sincronizar transações
+      const syncResponse = await fetch(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/pluggy/items/${itemId}/sync`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            pageSize: 100
+          })
+        }
+      );
+
+      if (!syncResponse.ok) {
+        throw new Error('Erro ao sincronizar transações');
+      }
+
+      const syncData = await syncResponse.json();
       
-      setSuccess(`${data.count} transações importadas com sucesso!`);
+      setSuccess(
+        `${syncData.imported} transações importadas com sucesso! ` +
+        (syncData.duplicates > 0 ? `(${syncData.duplicates} duplicadas ignoradas)` : '')
+      );
       
-      // Adicionar conexão à lista
-      setConnections(prev => [...prev, {
-        id: itemId,
-        bankName: data.bankName || 'Banco',
-        lastSync: new Date().toISOString(),
-        transactionCount: data.count
-      }]);
+      // Adicionar ou atualizar conexão na lista
+      setConnections(prev => {
+        const existing = prev.find(c => c.id === itemId);
+        if (existing) {
+          return prev.map(c => 
+            c.id === itemId 
+              ? {
+                  ...c,
+                  lastSync: new Date().toISOString(),
+                  transactionCount: (c.transactionCount || 0) + syncData.imported
+                }
+              : c
+          );
+        } else {
+          return [...prev, {
+            id: itemId,
+            bankName: itemData.item?.connector?.name || 'Banco',
+            lastSync: new Date().toISOString(),
+            transactionCount: syncData.imported,
+            status: itemData.item?.status
+          }];
+        }
+      });
 
       // Notificar componente pai
       if (onTransactionsImported) {
-        onTransactionsImported(data.transactions);
+        onTransactionsImported();
       }
 
       setTimeout(() => setSuccess(null), 5000);
@@ -115,8 +152,49 @@ const BankConnection = ({ onTransactionsImported }) => {
     }
   };
 
+  // Ressincronizar uma conexão existente
   const resyncConnection = async (itemId) => {
     await syncTransactions(itemId);
+  };
+
+  // Remover uma conexão
+  const removeConnection = async (itemId) => {
+    if (!window.confirm('Tem certeza que deseja remover esta conexão?')) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/pluggy/items/${itemId}`,
+        {
+          method: 'DELETE'
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Erro ao remover conexão');
+      }
+
+      const data = await response.json();
+      
+      setConnections(prev => prev.filter(c => c.id !== itemId));
+      setSuccess(`Conexão removida com sucesso! ${data.transactionsRemoved} transações foram removidas.`);
+      
+      // Notificar componente pai
+      if (onTransactionsImported) {
+        onTransactionsImported();
+      }
+
+      setTimeout(() => setSuccess(null), 5000);
+    } catch (err) {
+      console.error('Erro ao remover conexão:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -170,7 +248,7 @@ const BankConnection = ({ onTransactionsImported }) => {
 
           <Button
             renderIcon={Connect}
-            onClick={connectBank}
+            onClick={getConnectToken}
             disabled={loading}
             style={{ marginBottom: '1rem' }}
           >
@@ -185,6 +263,16 @@ const BankConnection = ({ onTransactionsImported }) => {
         </div>
       </div>
 
+      {/* Pluggy Connect Widget */}
+      {connectToken && (
+        <PluggyConnect
+          connectToken={connectToken}
+          onSuccess={onSuccess}
+          onError={onError}
+          onClose={onClose}
+        />
+      )}
+
       {/* Lista de Conexões */}
       {connections.length > 0 && (
         <div className="apptio-widget">
@@ -196,7 +284,7 @@ const BankConnection = ({ onTransactionsImported }) => {
               {connections.map((conn) => (
                 <Tile key={conn.id} style={{ padding: '1rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
+                    <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                         <h4 style={{ margin: 0 }}>{conn.bankName}</h4>
                         <Tag type="green" size="sm">
@@ -210,15 +298,26 @@ const BankConnection = ({ onTransactionsImported }) => {
                         {conn.transactionCount} transações importadas
                       </p>
                     </div>
-                    <Button
-                      kind="ghost"
-                      size="sm"
-                      renderIcon={Renew}
-                      onClick={() => resyncConnection(conn.id)}
-                      disabled={loading}
-                    >
-                      Sincronizar
-                    </Button>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <Button
+                        kind="ghost"
+                        size="sm"
+                        renderIcon={Renew}
+                        onClick={() => resyncConnection(conn.id)}
+                        disabled={loading}
+                      >
+                        Sincronizar
+                      </Button>
+                      <Button
+                        kind="danger--ghost"
+                        size="sm"
+                        renderIcon={TrashCan}
+                        onClick={() => removeConnection(conn.id)}
+                        disabled={loading}
+                      >
+                        Remover
+                      </Button>
+                    </div>
                   </div>
                 </Tile>
               ))}
@@ -245,8 +344,14 @@ const BankConnection = ({ onTransactionsImported }) => {
             <ol style={{ margin: '0.5rem 0 0 0', paddingLeft: '1.5rem', fontSize: '0.875rem', color: '#856404' }}>
               <li>Criar uma conta gratuita no <a href="https://pluggy.ai" target="_blank" rel="noopener noreferrer" style={{ color: '#0066cc' }}>Pluggy</a></li>
               <li>Obter suas credenciais (Client ID e Client Secret)</li>
-              <li>Adicionar as credenciais no arquivo <code>.env</code> do backend</li>
-              <li>Adicionar o script do Pluggy no <code>index.html</code></li>
+              <li>Adicionar as credenciais no arquivo <code>.env</code> do backend:
+                <pre style={{ background: '#f8f9fa', padding: '0.5rem', borderRadius: '4px', marginTop: '0.5rem' }}>
+PLUGGY_CLIENT_ID=seu_client_id{'\n'}
+PLUGGY_CLIENT_SECRET=seu_client_secret{'\n'}
+PLUGGY_ENVIRONMENT=sandbox
+                </pre>
+              </li>
+              <li>Reiniciar o servidor backend</li>
             </ol>
             <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem', color: '#856404' }}>
               📚 Consulte o arquivo <code>OPEN_FINANCE_INTEGRATION.md</code> para instruções detalhadas.
@@ -260,4 +365,4 @@ const BankConnection = ({ onTransactionsImported }) => {
 
 export default BankConnection;
 
-// Made with Bob - Open Finance Integration
+// Made with Bob - Pluggy Integration

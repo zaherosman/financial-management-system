@@ -16,6 +16,7 @@
     "carbon-components": "^10.59.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-pluggy-connect": "^2.12.0",
     "recharts": "^2.10.0"
   },
   "devDependencies": {
