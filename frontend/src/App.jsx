@@ -22,7 +22,10 @@ import {
   Notification,
   UserAvatar,
   Integration,
-  Receipt
+  Receipt,
+  WarningAlt,
+  Document,
+  ChartBubble
 } from '@carbon/icons-react';
 import TransactionForm from './components/TransactionForm';
 import TransactionList from './components/TransactionList';
@@ -186,13 +189,33 @@ function App() {
             >
               Plan
             </SideNavLink>
-            <SideNavLink
+            <SideNavMenu
               renderIcon={Idea}
-              onClick={() => setActiveView('insights')}
-              isActive={activeView === 'insights'}
+              title="Insights"
+              defaultExpanded={activeView === 'analytics' || activeView === 'alerts' || activeView === 'reports'}
             >
-              Insights
-            </SideNavLink>
+              <SideNavMenuItem
+                onClick={() => setActiveView('analytics')}
+                isActive={activeView === 'analytics'}
+              >
+                <ChartBubble style={{ marginRight: '8px' }} />
+                Analytics
+              </SideNavMenuItem>
+              <SideNavMenuItem
+                onClick={() => setActiveView('alerts')}
+                isActive={activeView === 'alerts'}
+              >
+                <WarningAlt style={{ marginRight: '8px' }} />
+                Alertas
+              </SideNavMenuItem>
+              <SideNavMenuItem
+                onClick={() => setActiveView('reports')}
+                isActive={activeView === 'reports'}
+              >
+                <Document style={{ marginRight: '8px' }} />
+                Relatórios
+              </SideNavMenuItem>
+            </SideNavMenu>
             <SideNavMenu
               renderIcon={Settings}
               title="Settings"
@@ -225,14 +248,18 @@ function App() {
                 <h1 className="apptio-page-title">
                   {activeView === 'home' && 'Home'}
                   {activeView === 'plan' && 'Plan'}
-                  {activeView === 'insights' && 'Insights'}
+                  {activeView === 'analytics' && 'Analytics'}
+                  {activeView === 'alerts' && 'Alertas'}
+                  {activeView === 'reports' && 'Relatórios'}
                   {activeView === 'integrations' && 'Integrações'}
                   {activeView === 'transactions' && 'Transações'}
                 </h1>
                 <p className="apptio-page-subtitle">
                   {activeView === 'home' && 'Visão geral do desempenho financeiro'}
                   {activeView === 'plan' && 'Previsões e projeções financeiras'}
-                  {activeView === 'insights' && 'Análises, relatórios e alertas inteligentes'}
+                  {activeView === 'analytics' && 'Análises avançadas e visualizações de dados'}
+                  {activeView === 'alerts' && 'Notificações e alertas inteligentes'}
+                  {activeView === 'reports' && 'Relatórios detalhados e exportações'}
                   {activeView === 'integrations' && 'Conecte suas contas bancárias via Open Finance'}
                   {activeView === 'transactions' && 'Gerencie suas transações manualmente'}
                 </p>
@@ -283,25 +310,39 @@ function App() {
               </div>
             )}
 
-            {/* Insights View - Analytics, Reports, Alerts */}
-            {activeView === 'insights' && (
+            {/* Analytics View */}
+            {activeView === 'analytics' && (
               <div className="apptio-view">
                 {loading && (
                   <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-                    <Loading description="Carregando insights..." withOverlay={false} />
+                    <Loading description="Carregando analytics..." withOverlay={false} />
                   </div>
                 )}
-                {!loading && (
-                  <>
-                    <AdvancedAnalytics transactions={transactions} kpis={kpis} />
-                    <div style={{ marginTop: '2rem' }}>
-                      <NotificationsPanel transactions={transactions} kpis={kpis} />
-                    </div>
-                    <div style={{ marginTop: '2rem' }}>
-                      <ReportsView transactions={transactions} />
-                    </div>
-                  </>
+                {!loading && <AdvancedAnalytics transactions={transactions} kpis={kpis} />}
+              </div>
+            )}
+
+            {/* Alerts View */}
+            {activeView === 'alerts' && (
+              <div className="apptio-view">
+                {loading && (
+                  <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                    <Loading description="Carregando alertas..." withOverlay={false} />
+                  </div>
                 )}
+                {!loading && <NotificationsPanel transactions={transactions} kpis={kpis} />}
+              </div>
+            )}
+
+            {/* Reports View */}
+            {activeView === 'reports' && (
+              <div className="apptio-view">
+                {loading && (
+                  <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                    <Loading description="Carregando relatórios..." withOverlay={false} />
+                  </div>
+                )}
+                {!loading && <ReportsView transactions={transactions} />}
               </div>
             )}
 
