@@ -1,10 +1,17 @@
-/* Apptio Cloudability Style - Professional & Clean */
+/* Apptio Cloudability Style - Responsive & Mobile-First */
+
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+}
 
 .apptio-app {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background-color: var(--apptio-bg-primary);
+  width: 100%;
+  overflow-x: hidden;
 }
 
 /* Header Styles */
@@ -15,6 +22,7 @@
   position: sticky;
   top: 0;
   z-index: 8000;
+  height: 48px;
 }
 
 .apptio-logo {
@@ -35,6 +43,13 @@
   color: var(--apptio-text-primary);
 }
 
+/* Hide logo text on mobile */
+@media (max-width: 640px) {
+  .apptio-logo-text {
+    display: none;
+  }
+}
+
 .apptio-header .cds--header__action {
   color: var(--apptio-text-secondary);
 }
@@ -49,6 +64,26 @@
   background-color: white !important;
   border-right: 1px solid var(--apptio-border);
   padding-top: 1rem;
+  position: fixed;
+  top: 48px;
+  left: 0;
+  bottom: 0;
+  width: 256px;
+  z-index: 6000;
+  overflow-y: auto;
+}
+
+/* Mobile: Sidebar overlay */
+@media (max-width: 1056px) {
+  .apptio-sidenav {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .apptio-sidenav[aria-hidden="false"] {
+    transform: translateX(0);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .apptio-sidenav .cds--side-nav__link {
@@ -76,46 +111,104 @@
   display: none;
 }
 
-/* Content Area */
+.apptio-sidenav .cds--side-nav__menu-item {
+  padding-left: 2.5rem;
+}
+
+/* Content Area - Full Width & Responsive */
 .apptio-content {
   background-color: var(--apptio-bg-primary);
-  margin-left: 256px;
-  padding: 0;
+  flex: 1;
+  width: 100%;
   min-height: calc(100vh - 48px);
+  padding: 0;
+}
+
+/* Desktop: Content with sidebar */
+@media (min-width: 1057px) {
+  .apptio-content {
+    margin-left: 256px;
+    width: calc(100% - 256px);
+  }
 }
 
 .apptio-container {
+  width: 100%;
   max-width: 1600px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
+  height: 100%;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .apptio-container {
+    padding: 1.5rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1200px) {
+  .apptio-container {
+    padding: 2rem;
+  }
 }
 
 /* Page Header */
 .apptio-page-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--apptio-border);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .apptio-page-header {
+    align-items: center;
+    margin-bottom: 2rem;
+  }
 }
 
 .apptio-page-title {
-  font-size: 1.75rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--apptio-text-primary);
   margin: 0 0 0.25rem 0;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .apptio-page-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .apptio-page-title {
+    font-size: 1.75rem;
+  }
 }
 
 .apptio-page-subtitle {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--apptio-text-secondary);
   margin: 0;
+  line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+  .apptio-page-subtitle {
+    font-size: 0.875rem;
+  }
 }
 
 /* View Styles */
 .apptio-view {
   animation: fadeIn 0.3s ease-in;
+  width: 100%;
 }
 
 @keyframes fadeIn {
@@ -134,38 +227,71 @@
   background-color: white;
   border: 1px solid var(--apptio-border);
   border-radius: 8px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   overflow: hidden;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .apptio-widget {
+    margin-bottom: 1.5rem;
+  }
 }
 
 .apptio-widget-header {
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1rem;
   border-bottom: 1px solid var(--apptio-border);
   background-color: var(--apptio-bg-tertiary);
 }
 
+@media (min-width: 768px) {
+  .apptio-widget-header {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
 .apptio-widget-title {
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--apptio-text-primary);
   margin: 0;
+  line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+  .apptio-widget-title {
+    font-size: 1rem;
+  }
 }
 
 .apptio-widget-content {
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
-/* KPI Card Styles */
+@media (min-width: 768px) {
+  .apptio-widget-content {
+    padding: 1.5rem;
+  }
+}
+
+/* KPI Card Styles - Mobile First */
 .apptio-kpi-card {
   background: white;
   border: 1px solid var(--apptio-border);
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 1rem;
   position: relative;
   overflow: hidden;
   transition: all 0.2s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .apptio-kpi-card {
+    padding: 1.5rem;
+  }
 }
 
 .apptio-kpi-card:hover {
@@ -199,7 +325,7 @@
 }
 
 .apptio-kpi-label {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--apptio-text-secondary);
   margin-bottom: 0.5rem;
   font-weight: 600;
@@ -207,20 +333,40 @@
   letter-spacing: 0.5px;
 }
 
+@media (min-width: 768px) {
+  .apptio-kpi-label {
+    font-size: 0.75rem;
+  }
+}
+
 .apptio-kpi-value {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--apptio-text-primary);
   line-height: 1.2;
   margin-bottom: 0.5rem;
+  word-break: break-word;
+}
+
+@media (min-width: 768px) {
+  .apptio-kpi-value {
+    font-size: 2rem;
+  }
 }
 
 .apptio-kpi-change {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
   font-weight: 500;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .apptio-kpi-change {
+    font-size: 0.875rem;
+  }
 }
 
 .apptio-kpi-change.positive {
@@ -240,31 +386,61 @@
   background-color: white;
   border: 1px solid var(--apptio-border);
   border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  overflow-x: auto;
+}
+
+@media (min-width: 768px) {
+  .apptio-chart-widget {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
 }
 
 .apptio-chart-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--apptio-border-light);
 }
 
+@media (min-width: 768px) {
+  .apptio-chart-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+}
+
 .apptio-chart-title {
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--apptio-text-primary);
   margin: 0;
 }
 
+@media (min-width: 768px) {
+  .apptio-chart-title {
+    font-size: 1.125rem;
+  }
+}
+
 .apptio-chart-subtitle {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--apptio-text-secondary);
   margin: 0.25rem 0 0 0;
+}
+
+@media (min-width: 768px) {
+  .apptio-chart-subtitle {
+    font-size: 0.875rem;
+  }
 }
 
 /* Table Enhancements */
@@ -273,39 +449,77 @@
   border: 1px solid var(--apptio-border);
   border-radius: 8px;
   overflow: hidden;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  overflow-x: auto;
+}
+
+@media (min-width: 768px) {
+  .apptio-table-widget {
+    margin-top: 1.5rem;
+  }
 }
 
 .apptio-table-header {
-  padding: 1.25rem 1.5rem;
+  padding: 1rem;
   border-bottom: 1px solid var(--apptio-border);
   background-color: var(--apptio-bg-tertiary);
 }
 
+@media (min-width: 768px) {
+  .apptio-table-header {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
 .apptio-table-title {
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--apptio-text-primary);
   margin: 0 0 0.25rem 0;
 }
 
+@media (min-width: 768px) {
+  .apptio-table-title {
+    font-size: 1rem;
+  }
+}
+
 .apptio-table-subtitle {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--apptio-text-secondary);
   margin: 0;
 }
 
-/* Form Enhancements */
+@media (min-width: 768px) {
+  .apptio-table-subtitle {
+    font-size: 0.875rem;
+  }
+}
+
+/* Form Enhancements - Mobile First */
 .apptio-form {
   display: grid;
-  gap: 1.5rem;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .apptio-form {
+    gap: 1.5rem;
+  }
 }
 
 .apptio-form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .apptio-form-row {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 /* Badge Styles */
@@ -317,6 +531,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .apptio-badge.success {
@@ -342,29 +557,54 @@
 /* Empty State */
 .apptio-empty-state {
   text-align: center;
-  padding: 4rem 2rem;
+  padding: 2rem 1rem;
   background: white;
   border: 1px solid var(--apptio-border);
   border-radius: 8px;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 768px) {
+  .apptio-empty-state {
+    padding: 4rem 2rem;
+    margin-top: 1.5rem;
+  }
 }
 
 .apptio-empty-icon {
-  font-size: 4rem;
+  font-size: 3rem;
   margin-bottom: 1rem;
   opacity: 0.3;
 }
 
+@media (min-width: 768px) {
+  .apptio-empty-icon {
+    font-size: 4rem;
+  }
+}
+
 .apptio-empty-title {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
   color: var(--apptio-text-primary);
   margin-bottom: 0.5rem;
 }
 
+@media (min-width: 768px) {
+  .apptio-empty-title {
+    font-size: 1.25rem;
+  }
+}
+
 .apptio-empty-text {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--apptio-text-secondary);
+}
+
+@media (min-width: 768px) {
+  .apptio-empty-text {
+    font-size: 0.875rem;
+  }
 }
 
 /* Loading States */
@@ -372,48 +612,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 3rem;
+  padding: 2rem;
   color: var(--apptio-text-secondary);
 }
 
-/* Responsive Design */
-@media (max-width: 1056px) {
-  .apptio-content {
-    margin-left: 0;
-  }
-  
-  .apptio-container {
-    padding: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .apptio-container {
-    padding: 1rem;
-  }
-
-  .apptio-page-title {
-    font-size: 1.5rem;
-  }
-  
-  .apptio-kpi-value {
-    font-size: 1.5rem;
-  }
-
-  .apptio-form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .apptio-page-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+@media (min-width: 768px) {
+  .apptio-loading {
+    padding: 3rem;
   }
 }
 
 /* Notification Enhancements */
 .cds--inline-notification {
   border-radius: 6px;
+  margin-bottom: 1rem;
 }
 
 .cds--inline-notification--error {
@@ -426,38 +638,94 @@
   border-left-color: var(--apptio-green);
 }
 
-/* Grid System */
+/* Grid System - Mobile First */
 .apptio-grid {
   display: grid;
-  gap: 1.5rem;
+  gap: 1rem;
+  width: 100%;
 }
 
-.apptio-grid-2 {
-  grid-template-columns: repeat(2, 1fr);
+@media (min-width: 768px) {
+  .apptio-grid {
+    gap: 1.5rem;
+  }
 }
 
-.apptio-grid-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
+.apptio-grid-2,
+.apptio-grid-3,
 .apptio-grid-4 {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr;
 }
 
-@media (max-width: 1200px) {
+@media (min-width: 640px) {
+  .apptio-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .apptio-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
   .apptio-grid-4 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 768px) {
-  .apptio-grid-2,
-  .apptio-grid-3,
-  .apptio-grid-4 {
-    grid-template-columns: 1fr;
+@media (min-width: 1024px) {
+  .apptio-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* Made with Bob - Apptio Cloudability Style */
+@media (min-width: 1200px) {
+  .apptio-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Carbon Design System Overrides for Mobile */
+.cds--btn {
+  min-height: 44px; /* Touch-friendly */
+}
+
+.cds--text-input,
+.cds--select-input,
+.cds--text-area {
+  font-size: 16px; /* Prevent zoom on iOS */
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--apptio-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--apptio-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--apptio-text-secondary);
+}
+
+/* Touch-friendly spacing */
+@media (hover: none) and (pointer: coarse) {
+  .apptio-kpi-card {
+    padding: 1.25rem;
+  }
+  
+  .cds--btn {
+    min-height: 48px;
+  }
+}
+
+/* Made with Bob - Responsive & Mobile-First */
 
 /* Made with Bob */
