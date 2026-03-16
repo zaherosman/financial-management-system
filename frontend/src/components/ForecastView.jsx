@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Grid, Column, Select, SelectItem, Toggle } from '@carbon/react';
 import { LineChart, SimpleBarChart } from '@carbon/charts-react';
-import { ArrowUp, ArrowDown, WarningAlt } from '@carbon/icons-react';
+import { ArrowUp, ArrowDown, Warning } from '@carbon/icons-react';
 
 const ForecastView = ({ transactions, kpis }) => {
   const [forecastPeriod, setForecastPeriod] = useState('3');
@@ -394,7 +394,7 @@ const ForecastView = ({ transactions, kpis }) => {
             <Column lg={8} md={4} sm={4}>
               <div style={{ padding: '1.5rem', background: '#fff3cd', border: '1px solid #ffc107', borderRadius: '8px', marginBottom: '1rem' }}>
                 <h4 style={{ margin: '0 0 1rem 0', color: '#856404', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <WarningAlt size={20} />
+                  <Warning size={20} />
                   Cenário Pessimista (-20%)
                 </h4>
                 <div style={{ display: 'grid', gap: '0.5rem' }}>
