@@ -15,7 +15,7 @@ import {
 import {
   Home,
   ChartLine,
-  Lightbulb,
+  Idea,
   Settings,
   Notification,
   UserAvatar
@@ -183,7 +183,7 @@ function App() {
               Plan
             </SideNavLink>
             <SideNavLink
-              renderIcon={Lightbulb}
+              renderIcon={Idea}
               onClick={() => setActiveView('insights')}
               isActive={activeView === 'insights'}
             >
