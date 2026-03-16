@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,8 +14,46 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Armazenamento em memória (em produção, usar banco de dados)
-let transactions = [];
+// Caminho do arquivo de dados
+const DATA_FILE = path.join(__dirname, 'data', 'transactions.json');
+
+// Garantir que o diretório data existe
+const ensureDataDirectory = () => {
+  const dataDir = path.join(__dirname, 'data');
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+};
+
+// Carregar transações do arquivo
+const loadTransactions = () => {
+  try {
+    ensureDataDirectory();
+    if (fs.existsSync(DATA_FILE)) {
+      const data = fs.readFileSync(DATA_FILE, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar transações:', error);
+  }
+  return [];
+};
+
+// Salvar transações no arquivo
+const saveTransactions = (transactions) => {
+  try {
+    ensureDataDirectory();
+    fs.writeFileSync(DATA_FILE, JSON.stringify(transactions, null, 2), 'utf8');
+    return true;
+  } catch (error) {
+    console.error('Erro ao salvar transações:', error);
+    return false;
+  }
+};
+
+// Carregar transações ao iniciar o servidor
+let transactions = loadTransactions();
+console.log(`📦 ${transactions.length} transações carregadas do arquivo`);
 
 // Rotas
 
@@ -50,6 +90,7 @@ app.post('/api/transactions', (req, res) => {
   };
 
   transactions.push(transaction);
+  saveTransactions(transactions);
   res.status(201).json(transaction);
 });
 
@@ -81,6 +122,7 @@ app.put('/api/transactions/:id', (req, res) => {
     updatedAt: new Date().toISOString()
   };
 
+  saveTransactions(transactions);
   res.json(transactions[index]);
 });
 
@@ -92,6 +134,7 @@ app.delete('/api/transactions/:id', (req, res) => {
   }
 
   transactions.splice(index, 1);
+  saveTransactions(transactions);
   res.status(204).send();
 });
 

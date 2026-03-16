@@ -27,3 +27,6 @@ Thumbs.db
 # Testing
 coverage/
 .nyc_output/
+
+# Data persistence (optional - remove if you want to commit data)
+backend/data/

@@ -35,37 +35,90 @@ const ForecastView = ({ transactions, kpis }) => {
     // Agrupar transações por mês
     const monthlyData = {};
     transactions.forEach(t => {
+      // Validar se a transação tem data válida
+      if (!t.date || typeof t.date !== 'string') {
+        console.warn('Transação sem data válida:', t);
+        return;
+      }
+      
       const month = t.date.substring(0, 7); // YYYY-MM
       if (!monthlyData[month]) {
         monthlyData[month] = { revenue: 0, expenses: 0 };
       }
+      
+      // Validar amount
+      const amount = parseFloat(t.amount) || 0;
+      
       if (t.type === 'entrada') {
-        monthlyData[month].revenue += t.amount;
-      } else {
-        monthlyData[month].expenses += t.amount;
+        monthlyData[month].revenue += amount;
+      } else if (t.type === 'saida') {
+        monthlyData[month].expenses += amount;
       }
     });
 
     const months = Object.keys(monthlyData).sort();
+    
+    // Verificar se há dados suficientes
+    if (months.length === 0) {
+      console.warn('Nenhum dado mensal disponível para forecast');
+      return {
+        revenue: [],
+        expenses: [],
+        cashFlow: [],
+        metrics: {
+          avgMonthlyRevenue: 0,
+          avgMonthlyExpenses: 0,
+          projectedRevenue: 0,
+          projectedExpenses: 0,
+          projectedProfit: 0,
+          confidence: 0
+        }
+      };
+    }
+    
     const revenueData = months.map(m => monthlyData[m].revenue);
     const expensesData = months.map(m => monthlyData[m].expenses);
 
     // Calcular médias
-    const avgRevenue = revenueData.reduce((a, b) => a + b, 0) / revenueData.length;
-    const avgExpenses = expensesData.reduce((a, b) => a + b, 0) / expensesData.length;
+    const avgRevenue = revenueData.length > 0
+      ? revenueData.reduce((a, b) => a + b, 0) / revenueData.length
+      : 0;
+    const avgExpenses = expensesData.length > 0
+      ? expensesData.reduce((a, b) => a + b, 0) / expensesData.length
+      : 0;
 
     // Calcular tendência (regressão linear simples)
     const calculateTrend = (data) => {
+      if (!data || data.length === 0) {
+        return { slope: 0, intercept: 0 };
+      }
+      
       const n = data.length;
+      
+      // Se houver apenas um ponto de dados, usar média como base
+      if (n === 1) {
+        return { slope: 0, intercept: data[0] };
+      }
+      
       const sumX = (n * (n + 1)) / 2;
       const sumY = data.reduce((a, b) => a + b, 0);
       const sumXY = data.reduce((sum, y, i) => sum + (i + 1) * y, 0);
       const sumX2 = (n * (n + 1) * (2 * n + 1)) / 6;
       
-      const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+      const denominator = (n * sumX2 - sumX * sumX);
+      
+      // Evitar divisão por zero
+      if (denominator === 0) {
+        return { slope: 0, intercept: sumY / n };
+      }
+      
+      const slope = (n * sumXY - sumX * sumY) / denominator;
       const intercept = (sumY - slope * sumX) / n;
       
-      return { slope, intercept };
+      return {
+        slope: isNaN(slope) ? 0 : slope,
+        intercept: isNaN(intercept) ? 0 : intercept
+      };
     };
 
     const revenueTrend = calculateTrend(revenueData);
@@ -123,6 +176,9 @@ const ForecastView = ({ transactions, kpis }) => {
       const revenueStdDev = Math.sqrt(revenueVariance);
       const coefficientOfVariation = (revenueStdDev / avgRevenue) * 100;
       confidence = Math.max(0, Math.min(100, 100 - coefficientOfVariation));
+    } else if (revenueData.length > 0) {
+      // Se não há receita mas há dados, confiança baseada na quantidade de dados
+      confidence = Math.min(revenueData.length * 10, 50);
     }
 
     const totalProjectedRevenue = forecastRevenue.reduce((sum, item) => sum + item.value, 0);
@@ -281,8 +337,9 @@ const ForecastView = ({ transactions, kpis }) => {
             {combinedForecastData.length > 0 ? (
               <LineChart data={combinedForecastData} options={lineChartOptions} />
             ) : (
-              <div style={{ padding: '2rem', textAlign: 'center', color: '#6c757d' }}>
-                Dados insuficientes para gerar previsões
+              <div style={{ padding: '3rem', textAlign: 'center', color: '#6c757d' }}>
+                <p style={{ fontSize: '1.125rem', marginBottom: '0.5rem' }}>📊 Aguardando dados...</p>
+                <p style={{ fontSize: '0.875rem' }}>Adicione transações para visualizar as projeções</p>
               </div>
             )}
           </div>
@@ -297,8 +354,9 @@ const ForecastView = ({ transactions, kpis }) => {
             {forecast.cashFlow.length > 0 ? (
               <SimpleBarChart data={forecast.cashFlow} options={cashFlowChartOptions} />
             ) : (
-              <div style={{ padding: '2rem', textAlign: 'center', color: '#6c757d' }}>
-                Dados insuficientes para gerar previsões
+              <div style={{ padding: '3rem', textAlign: 'center', color: '#6c757d' }}>
+                <p style={{ fontSize: '1.125rem', marginBottom: '0.5rem' }}>💰 Aguardando dados...</p>
+                <p style={{ fontSize: '0.875rem' }}>Adicione transações para visualizar o fluxo de caixa projetado</p>
               </div>
             )}
           </div>
