@@ -13,13 +13,11 @@ import {
   Loading
 } from '@carbon/react';
 import {
-  Dashboard,
-  Receipt,
+  Home,
   ChartLine,
-  Analytics,
-  Report,
+  Lightbulb,
+  Settings,
   Notification,
-  FlagFilled,
   UserAvatar
 } from '@carbon/icons-react';
 import TransactionForm from './components/TransactionForm';
@@ -29,11 +27,12 @@ import AdvancedAnalytics from './components/AdvancedAnalytics';
 import ForecastView from './components/ForecastView';
 import ReportsView from './components/ReportsView';
 import NotificationsPanel from './components/NotificationsPanel';
+import BankConnection from './components/BankConnection';
 import { transactionService, kpiService } from './services/api';
 import './App.css';
 
 function App() {
-  const [activeView, setActiveView] = useState('dashboard');
+  const [activeView, setActiveView] = useState('home');
   const [transactions, setTransactions] = useState([]);
   const [kpis, setKpis] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -170,46 +169,32 @@ function App() {
         >
           <SideNavItems>
             <SideNavLink
-              renderIcon={Dashboard}
-              onClick={() => setActiveView('dashboard')}
-              isActive={activeView === 'dashboard'}
+              renderIcon={Home}
+              onClick={() => setActiveView('home')}
+              isActive={activeView === 'home'}
             >
-              Dashboard
-            </SideNavLink>
-            <SideNavLink
-              renderIcon={Receipt}
-              onClick={() => setActiveView('transactions')}
-              isActive={activeView === 'transactions'}
-            >
-              Transações
-            </SideNavLink>
-            <SideNavLink
-              renderIcon={Analytics}
-              onClick={() => setActiveView('analytics')}
-              isActive={activeView === 'analytics'}
-            >
-              Análises
+              Home
             </SideNavLink>
             <SideNavLink
               renderIcon={ChartLine}
-              onClick={() => setActiveView('forecast')}
-              isActive={activeView === 'forecast'}
+              onClick={() => setActiveView('plan')}
+              isActive={activeView === 'plan'}
             >
-              Forecast
+              Plan
             </SideNavLink>
             <SideNavLink
-              renderIcon={FlagFilled}
-              onClick={() => setActiveView('alerts')}
-              isActive={activeView === 'alerts'}
+              renderIcon={Lightbulb}
+              onClick={() => setActiveView('insights')}
+              isActive={activeView === 'insights'}
             >
-              Alertas
+              Insights
             </SideNavLink>
             <SideNavLink
-              renderIcon={Report}
-              onClick={() => setActiveView('reports')}
-              isActive={activeView === 'reports'}
+              renderIcon={Settings}
+              onClick={() => setActiveView('settings')}
+              isActive={activeView === 'settings'}
             >
-              Relatórios
+              Settings
             </SideNavLink>
           </SideNavItems>
         </SideNav>
@@ -221,20 +206,16 @@ function App() {
             <div className="apptio-page-header">
               <div>
                 <h1 className="apptio-page-title">
-                  {activeView === 'dashboard' && 'Dashboard'}
-                  {activeView === 'transactions' && 'Transações'}
-                  {activeView === 'analytics' && 'Análises Avançadas'}
-                  {activeView === 'forecast' && 'Forecast & Projeções'}
-                  {activeView === 'alerts' && 'Alertas & Notificações'}
-                  {activeView === 'reports' && 'Relatórios'}
+                  {activeView === 'home' && 'Home'}
+                  {activeView === 'plan' && 'Plan'}
+                  {activeView === 'insights' && 'Insights'}
+                  {activeView === 'settings' && 'Settings'}
                 </h1>
                 <p className="apptio-page-subtitle">
-                  {activeView === 'dashboard' && 'Visão geral do desempenho financeiro'}
-                  {activeView === 'transactions' && 'Gerencie suas entradas e saídas financeiras'}
-                  {activeView === 'analytics' && 'Análises detalhadas e indicadores avançados'}
-                  {activeView === 'forecast' && 'Previsões e projeções financeiras baseadas em dados históricos'}
-                  {activeView === 'alerts' && 'Monitoramento inteligente da saúde financeira'}
-                  {activeView === 'reports' && 'Relatórios personalizados e exportação de dados'}
+                  {activeView === 'home' && 'Visão geral do desempenho financeiro'}
+                  {activeView === 'plan' && 'Previsões e projeções financeiras'}
+                  {activeView === 'insights' && 'Análises, relatórios e alertas inteligentes'}
+                  {activeView === 'settings' && 'Configurações, integrações e transações'}
                 </p>
               </div>
             </div>
@@ -259,8 +240,8 @@ function App() {
               />
             )}
 
-            {/* Dashboard View */}
-            {activeView === 'dashboard' && (
+            {/* Home View - Dashboard */}
+            {activeView === 'home' && (
               <div className="apptio-view">
                 {loading && (
                   <div style={{ marginTop: '2rem', textAlign: 'center' }}>
@@ -271,13 +252,56 @@ function App() {
               </div>
             )}
 
-            {/* Transactions View */}
-            {activeView === 'transactions' && (
+            {/* Plan View - Forecast */}
+            {activeView === 'plan' && (
               <div className="apptio-view">
-                <div className="apptio-widget">
+                {loading && (
+                  <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                    <Loading description="Gerando previsões..." withOverlay={false} />
+                  </div>
+                )}
+                {!loading && <ForecastView transactions={transactions} kpis={kpis} />}
+              </div>
+            )}
+
+            {/* Insights View - Analytics, Reports, Alerts */}
+            {activeView === 'insights' && (
+              <div className="apptio-view">
+                {loading && (
+                  <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                    <Loading description="Carregando insights..." withOverlay={false} />
+                  </div>
+                )}
+                {!loading && (
+                  <>
+                    <AdvancedAnalytics transactions={transactions} kpis={kpis} />
+                    <div style={{ marginTop: '2rem' }}>
+                      <NotificationsPanel transactions={transactions} kpis={kpis} />
+                    </div>
+                    <div style={{ marginTop: '2rem' }}>
+                      <ReportsView transactions={transactions} />
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* Settings View - Transactions & Integrations */}
+            {activeView === 'settings' && (
+              <div className="apptio-view">
+                {/* Open Finance Integration */}
+                <BankConnection
+                  onTransactionsImported={async () => {
+                    await loadTransactions();
+                    await loadKPIs();
+                  }}
+                />
+
+                {/* Manual Transaction Entry */}
+                <div className="apptio-widget" style={{ marginTop: '2rem' }}>
                   <div className="apptio-widget-header">
                     <h3 className="apptio-widget-title">
-                      {editingTransaction ? 'Editar Transação' : 'Nova Transação'}
+                      ✏️ {editingTransaction ? 'Editar Transação' : 'Adicionar Transação Manualmente'}
                     </h3>
                   </div>
                   <div className="apptio-widget-content">
@@ -295,59 +319,14 @@ function App() {
                   </div>
                 )}
                 
-                <TransactionList
-                  transactions={transactions}
-                  onDelete={handleDeleteTransaction}
-                  onEdit={handleEditTransaction}
-                />
-              </div>
-            )}
-
-            {/* Analytics View */}
-            {activeView === 'analytics' && (
-              <div className="apptio-view">
-                {loading && (
-                  <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-                    <Loading description="Carregando análises..." withOverlay={false} />
-                  </div>
-                )}
-                {!loading && <AdvancedAnalytics transactions={transactions} kpis={kpis} />}
-              </div>
-            )}
-
-            {/* Forecast View */}
-            {activeView === 'forecast' && (
-              <div className="apptio-view">
-                {loading && (
-                  <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-                    <Loading description="Gerando previsões..." withOverlay={false} />
-                  </div>
-                )}
-                {!loading && <ForecastView transactions={transactions} kpis={kpis} />}
-              </div>
-            )}
-
-            {/* Alerts View */}
-            {activeView === 'alerts' && (
-              <div className="apptio-view">
-                {loading && (
-                  <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-                    <Loading description="Analisando alertas..." withOverlay={false} />
-                  </div>
-                )}
-                {!loading && <NotificationsPanel transactions={transactions} kpis={kpis} />}
-              </div>
-            )}
-
-            {/* Reports View */}
-            {activeView === 'reports' && (
-              <div className="apptio-view">
-                {loading && (
-                  <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-                    <Loading description="Gerando relatórios..." withOverlay={false} />
-                  </div>
-                )}
-                {!loading && <ReportsView transactions={transactions} />}
+                {/* Transaction List */}
+                <div style={{ marginTop: '2rem' }}>
+                  <TransactionList
+                    transactions={transactions}
+                    onDelete={handleDeleteTransaction}
+                    onEdit={handleEditTransaction}
+                  />
+                </div>
               </div>
             )}
           </div>

@@ -3,6 +3,7 @@ const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
+const openFinanceService = require('./services/openFinance');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
