@@ -1,4 +1,4 @@
-/* IBM Carbon Design System - Pure Style */
+/* IBM Carbon Design System - White Theme */
 
 /* Reset & Base */
 * {
@@ -14,10 +14,10 @@
   overflow-x: hidden;
 }
 
-/* Header Styles - IBM Carbon */
+/* Header Styles - IBM Carbon White Theme */
 .apptio-header {
-  background: #161616 !important;
-  border-bottom: none;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e0e0e0;
   position: sticky;
   top: 0;
   z-index: 8000;
@@ -37,9 +37,9 @@
 }
 
 .apptio-logo-text {
-  font-weight: 400;
+  font-weight: 600;
   font-size: 0.875rem;
-  color: #f4f4f4;
+  color: #161616;
 }
 
 /* Hide logo text on mobile */
@@ -50,17 +50,17 @@
 }
 
 .apptio-header .cds--header__action {
-  color: #f4f4f4;
+  color: #161616;
 }
 
 .apptio-header .cds--header__action:hover {
-  background-color: #353535;
+  background-color: #e0e0e0;
 }
 
-/* Sidebar Styles - IBM Carbon */
+/* Sidebar Styles - IBM Carbon White Theme */
 .apptio-sidenav {
-  background-color: #262626 !important;
-  border-right: none;
+  background-color: #f4f4f4 !important;
+  border-right: 1px solid #e0e0e0;
   padding-top: 0;
   position: fixed;
   top: 48px;
@@ -80,12 +80,12 @@
   
   .apptio-sidenav[aria-hidden="false"] {
     transform: translateX(0);
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
   }
 }
 
 .apptio-sidenav .cds--side-nav__link {
-  color: #f4f4f4;
+  color: #525252;
   border-radius: 0;
   margin: 0;
   transition: all 0.11s cubic-bezier(0.2, 0, 0.38, 0.9);
@@ -93,14 +93,14 @@
 }
 
 .apptio-sidenav .cds--side-nav__link:hover {
-  background-color: #353535;
-  color: #ffffff;
+  background-color: #e0e0e0;
+  color: #161616;
 }
 
 .apptio-sidenav .cds--side-nav__link--current,
 .apptio-sidenav .cds--side-nav__link[aria-current="page"] {
-  background-color: #393939;
-  color: #ffffff;
+  background-color: #e0e0e0;
+  color: #161616;
   font-weight: 600;
   border-left: 3px solid #0f62fe;
 }
@@ -114,16 +114,16 @@
 }
 
 .apptio-sidenav .cds--side-nav__menu {
-  background-color: #262626;
+  background-color: #f4f4f4;
 }
 
 .apptio-sidenav .cds--side-nav__menu-item .cds--side-nav__link {
-  color: #c6c6c6;
+  color: #525252;
 }
 
 .apptio-sidenav .cds--side-nav__menu-item .cds--side-nav__link:hover {
-  background-color: #353535;
-  color: #f4f4f4;
+  background-color: #e0e0e0;
+  color: #161616;
 }
 
 /* Content Area - Full Width & Responsive */
@@ -612,6 +612,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Made with Bob - IBM Carbon Design System */
+/* Made with Bob - IBM Carbon Design System White Theme */
 
 /* Made with Bob */
