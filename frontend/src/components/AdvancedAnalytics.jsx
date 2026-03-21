@@ -124,7 +124,7 @@ const AdvancedAnalytics = ({ transactions, kpis }) => {
         label: 'Total'
       }
     },
-    theme: 'white'
+    theme: 'g100'
   };
 
   const barOptions = {
@@ -134,8 +134,8 @@ const AdvancedAnalytics = ({ transactions, kpis }) => {
       left: { mapsTo: 'value', title: 'Valor (R$)', scaleType: 'linear' }
     },
     height: '400px',
-    theme: 'white',
-    color: { scale: { 'Receita': '#28a745' } }
+    theme: 'g100',
+    color: { scale: { 'Receita': '#42be65' } }
   };
 
   const efficiencyOptions = {
@@ -146,8 +146,8 @@ const AdvancedAnalytics = ({ transactions, kpis }) => {
     },
     curve: 'curveMonotoneX',
     height: '400px',
-    theme: 'white',
-    color: { scale: { 'Eficiência': '#4a90e2' } }
+    theme: 'g100',
+    color: { scale: { 'Eficiência': '#78a9ff' } }
   };
 
   const getTrendIcon = (value) => {

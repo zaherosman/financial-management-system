@@ -171,12 +171,12 @@ const KPIDashboard = ({ kpis: initialKpis }) => {
     },
     curve: 'curveMonotoneX',
     height: '400px',
-    theme: 'white',
+    theme: 'g100',
     color: {
       scale: {
-        'Entradas': '#28a745',
-        'Saídas': '#d73a49',
-        'Saldo': '#4a90e2'
+        'Entradas': '#42be65',
+        'Saídas': '#ff8389',
+        'Saldo': '#78a9ff'
       }
     },
     grid: { x: { enabled: false }, y: { enabled: true } }
@@ -190,8 +190,8 @@ const KPIDashboard = ({ kpis: initialKpis }) => {
     },
     curve: 'curveMonotoneX',
     height: '400px',
-    theme: 'white',
-    color: { scale: { 'Patrimônio Acumulado': '#8b5cf6' } },
+    theme: 'g100',
+    color: { scale: { 'Patrimônio Acumulado': '#be95ff' } },
     grid: { x: { enabled: false }, y: { enabled: true } }
   };
 
@@ -202,8 +202,8 @@ const KPIDashboard = ({ kpis: initialKpis }) => {
       left: { mapsTo: 'value', title: 'Valor (R$)', scaleType: 'linear' }
     },
     height: '400px',
-    theme: 'white',
-    color: { scale: { 'Entradas': '#28a745', 'Saídas': '#d73a49' } }
+    theme: 'g100',
+    color: { scale: { 'Entradas': '#42be65', 'Saídas': '#ff8389' } }
   };
 
   const saldoLiquido = parseFloat(kpis.resumo.saldoLiquido);
@@ -499,37 +499,6 @@ const KPIDashboard = ({ kpis: initialKpis }) => {
 
   return (
     <div>
-      {/* Header with Add Widget Button */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginBottom: '2rem',
-        padding: '1.5rem',
-        background: 'white',
-        borderRadius: '8px',
-        border: '1px solid var(--apptio-border)',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
-      }}>
-        <div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: '600', color: 'var(--apptio-text-primary)', marginBottom: '0.25rem' }}>
-            Dashboard Financeiro
-          </h1>
-          <p style={{ color: 'var(--apptio-text-secondary)', fontSize: '0.875rem' }}>
-            {activeWidgets.length === 0 
-              ? 'Clique em "Adicionar Widget" para começar a personalizar seu dashboard' 
-              : `${activeWidgets.length} widget${activeWidgets.length > 1 ? 's' : ''} ativo${activeWidgets.length > 1 ? 's' : ''}`
-            }
-          </p>
-        </div>
-        <Button
-          kind="primary"
-          renderIcon={Add}
-          onClick={() => setIsModalOpen(true)}
-        >
-          Adicionar Widget
-        </Button>
-      </div>
 
       {/* Time Grouping Filters (only show if there are chart widgets) */}
       {hasChartWidgets && (

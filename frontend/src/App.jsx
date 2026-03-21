@@ -12,7 +12,11 @@ import {
   SideNavMenu,
   SideNavMenuItem,
   InlineNotification,
-  Loading
+  Loading,
+  Breadcrumb,
+  BreadcrumbItem,
+  Button,
+  Toggle
 } from '@carbon/react';
 import {
   Home,
@@ -28,7 +32,9 @@ import {
   ChartBubble,
   Catalog,
   Package,
-  UserMultiple
+  UserMultiple,
+  Switcher,
+  Search
 } from '@carbon/icons-react';
 import TransactionForm from './components/TransactionForm';
 import TransactionList from './components/TransactionList';
@@ -275,11 +281,30 @@ function App() {
         {/* Main Content */}
         <Content className="apptio-content">
           <div className="apptio-container">
+            {/* Breadcrumb Navigation */}
+            <Breadcrumb noTrailingSlash className="apptio-breadcrumb">
+              <BreadcrumbItem href="#" onClick={() => setActiveView('home')}>
+                All Dashboards
+              </BreadcrumbItem>
+              <BreadcrumbItem href="#" isCurrentPage>
+                {activeView === 'home' && 'Finance (Cost)'}
+                {activeView === 'plan' && 'Plan'}
+                {activeView === 'analytics' && 'Analytics'}
+                {activeView === 'alerts' && 'Alertas'}
+                {activeView === 'reports' && 'Relatórios'}
+                {activeView === 'inventory' && 'Controle de Estoque'}
+                {activeView === 'products' && 'Produtos'}
+                {activeView === 'sellers' && 'Vendedores'}
+                {activeView === 'integrations' && 'Integrações'}
+                {activeView === 'transactions' && 'Transações'}
+              </BreadcrumbItem>
+            </Breadcrumb>
+
             {/* Page Header */}
             <div className="apptio-page-header">
               <div>
                 <h1 className="apptio-page-title">
-                  {activeView === 'home' && 'Home'}
+                  {activeView === 'home' && 'Finance (Cost)'}
                   {activeView === 'plan' && 'Plan'}
                   {activeView === 'analytics' && 'Analytics'}
                   {activeView === 'alerts' && 'Alertas'}
@@ -290,18 +315,18 @@ function App() {
                   {activeView === 'integrations' && 'Integrações'}
                   {activeView === 'transactions' && 'Transações'}
                 </h1>
-                <p className="apptio-page-subtitle">
-                  {activeView === 'home' && 'Visão geral do desempenho financeiro'}
-                  {activeView === 'plan' && 'Previsões e projeções financeiras'}
-                  {activeView === 'analytics' && 'Análises avançadas e visualizações de dados'}
-                  {activeView === 'alerts' && 'Notificações e alertas inteligentes'}
-                  {activeView === 'reports' && 'Relatórios detalhados e exportações'}
-                  {activeView === 'inventory' && 'Gerencie o estoque de produtos por vendedor'}
-                  {activeView === 'products' && 'Cadastro e gerenciamento de produtos'}
-                  {activeView === 'sellers' && 'Cadastro e gerenciamento de vendedores'}
-                  {activeView === 'integrations' && 'Conecte suas contas bancárias via Open Finance'}
-                  {activeView === 'transactions' && 'Gerencie suas transações manualmente'}
-                </p>
+              </div>
+              <div className="apptio-page-actions">
+                <Toggle
+                  id="cloudability-ui-toggle"
+                  labelText=""
+                  labelA="Default"
+                  labelB="Starred"
+                  size="sm"
+                />
+                <Button kind="primary" size="sm">
+                  Add Widget
+                </Button>
               </div>
             </div>
 

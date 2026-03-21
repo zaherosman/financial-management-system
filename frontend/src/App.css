@@ -16,7 +16,7 @@
 
 /* Header Styles - Dark Theme */
 .apptio-header {
-  background: #161616 !important;
+  background: #262626 !important;
   border-bottom: 1px solid #393939;
   position: sticky;
   top: 0;
@@ -147,8 +147,23 @@
   width: 100%;
   max-width: 1584px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem 2rem 2rem 2rem;
   height: 100%;
+}
+
+/* Breadcrumb Styles */
+.apptio-breadcrumb {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+}
+
+.apptio-breadcrumb .cds--breadcrumb-item a {
+  color: #78a9ff;
+  font-size: 0.875rem;
+}
+
+.apptio-breadcrumb .cds--breadcrumb-item::after {
+  color: #525252;
 }
 
 /* Page Header - Dark Theme */
@@ -156,18 +171,24 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #393939;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0;
+  border-bottom: none;
   gap: 1rem;
 }
 
 .apptio-page-title {
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 400;
   color: #f4f4f4;
-  margin: 0 0 0.25rem 0;
+  margin: 0;
   line-height: 1.25;
+}
+
+.apptio-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .apptio-page-subtitle {

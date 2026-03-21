@@ -215,11 +215,11 @@ const ForecastView = ({ transactions, kpis }) => {
     },
     curve: 'curveMonotoneX',
     height: '400px',
-    theme: 'white',
+    theme: 'g100',
     color: {
       scale: {
-        'Receita Projetada': '#28a745',
-        'Despesas Projetadas': '#d73a49'
+        'Receita Projetada': '#42be65',
+        'Despesas Projetadas': '#ff8389'
       }
     }
   };
@@ -231,8 +231,8 @@ const ForecastView = ({ transactions, kpis }) => {
       left: { mapsTo: 'value', title: 'Fluxo de Caixa (R$)', scaleType: 'linear' }
     },
     height: '400px',
-    theme: 'white',
-    color: { scale: { 'Fluxo de Caixa': '#4a90e2' } }
+    theme: 'g100',
+    color: { scale: { 'Fluxo de Caixa': '#78a9ff' } }
   };
 
   const getConfidenceColor = (confidence) => {
