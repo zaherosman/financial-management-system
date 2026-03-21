@@ -25,7 +25,10 @@ import {
   Receipt,
   WarningAlt,
   Document,
-  ChartBubble
+  ChartBubble,
+  Inventory,
+  Package,
+  UserMultiple
 } from '@carbon/icons-react';
 import TransactionForm from './components/TransactionForm';
 import TransactionList from './components/TransactionList';
@@ -35,6 +38,9 @@ import ForecastView from './components/ForecastView';
 import ReportsView from './components/ReportsView';
 import NotificationsPanel from './components/NotificationsPanel';
 import BankConnection from './components/BankConnection';
+import ProductManagement from './components/ProductManagement';
+import SellerManagement from './components/SellerManagement';
+import InventoryManagement from './components/InventoryManagement';
 import { transactionService, kpiService } from './services/api';
 import './App.css';
 
@@ -142,19 +148,19 @@ function App() {
   };
 
   return (
-    <Theme theme="white">
+    <Theme theme="g10">
       <div className="apptio-app">
         {/* Header */}
         <Header aria-label="Financial Management System" className="apptio-header">
           <HeaderName prefix="">
             <div className="apptio-logo">
               <div className="apptio-logo-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="10" fill="#ff6b35"/>
-                  <path d="M8 12h8M12 8v8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+                  <path d="M16 2L2 9l14 7 14-7-14-7z" fill="#0f62fe"/>
+                  <path d="M2 23l14 7 14-7M2 16l14 7 14-7" stroke="#0f62fe" strokeWidth="2" fill="none"/>
                 </svg>
               </div>
-              <span className="apptio-logo-text">Financial Management</span>
+              <span className="apptio-logo-text">Financial Management System</span>
             </div>
           </HeaderName>
           <HeaderGlobalBar>
@@ -217,6 +223,33 @@ function App() {
               </SideNavMenuItem>
             </SideNavMenu>
             <SideNavMenu
+              renderIcon={Inventory}
+              title="Estoque"
+              defaultExpanded={activeView === 'inventory' || activeView === 'products' || activeView === 'sellers'}
+            >
+              <SideNavMenuItem
+                onClick={() => setActiveView('inventory')}
+                isActive={activeView === 'inventory'}
+              >
+                <Inventory style={{ marginRight: '8px' }} />
+                Controle de Estoque
+              </SideNavMenuItem>
+              <SideNavMenuItem
+                onClick={() => setActiveView('products')}
+                isActive={activeView === 'products'}
+              >
+                <Package style={{ marginRight: '8px' }} />
+                Produtos
+              </SideNavMenuItem>
+              <SideNavMenuItem
+                onClick={() => setActiveView('sellers')}
+                isActive={activeView === 'sellers'}
+              >
+                <UserMultiple style={{ marginRight: '8px' }} />
+                Vendedores
+              </SideNavMenuItem>
+            </SideNavMenu>
+            <SideNavMenu
               renderIcon={Settings}
               title="Settings"
               defaultExpanded={activeView === 'integrations' || activeView === 'transactions'}
@@ -251,6 +284,9 @@ function App() {
                   {activeView === 'analytics' && 'Analytics'}
                   {activeView === 'alerts' && 'Alertas'}
                   {activeView === 'reports' && 'Relatórios'}
+                  {activeView === 'inventory' && 'Controle de Estoque'}
+                  {activeView === 'products' && 'Produtos'}
+                  {activeView === 'sellers' && 'Vendedores'}
                   {activeView === 'integrations' && 'Integrações'}
                   {activeView === 'transactions' && 'Transações'}
                 </h1>
@@ -260,6 +296,9 @@ function App() {
                   {activeView === 'analytics' && 'Análises avançadas e visualizações de dados'}
                   {activeView === 'alerts' && 'Notificações e alertas inteligentes'}
                   {activeView === 'reports' && 'Relatórios detalhados e exportações'}
+                  {activeView === 'inventory' && 'Gerencie o estoque de produtos por vendedor'}
+                  {activeView === 'products' && 'Cadastro e gerenciamento de produtos'}
+                  {activeView === 'sellers' && 'Cadastro e gerenciamento de vendedores'}
                   {activeView === 'integrations' && 'Conecte suas contas bancárias via Open Finance'}
                   {activeView === 'transactions' && 'Gerencie suas transações manualmente'}
                 </p>
@@ -343,6 +382,27 @@ function App() {
                   </div>
                 )}
                 {!loading && <ReportsView transactions={transactions} />}
+              </div>
+            )}
+
+            {/* Inventory View - Stock Control */}
+            {activeView === 'inventory' && (
+              <div className="apptio-view">
+                <InventoryManagement />
+              </div>
+            )}
+
+            {/* Products View */}
+            {activeView === 'products' && (
+              <div className="apptio-view">
+                <ProductManagement />
+              </div>
+            )}
+
+            {/* Sellers View */}
+            {activeView === 'sellers' && (
+              <div className="apptio-view">
+                <SellerManagement />
               </div>
             )}
 

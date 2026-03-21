@@ -16,8 +16,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Caminho do arquivo de dados
+// Caminhos dos arquivos de dados
 const DATA_FILE = path.join(__dirname, 'data', 'transactions.json');
+const PRODUCTS_FILE = path.join(__dirname, 'data', 'products.json');
+const SELLERS_FILE = path.join(__dirname, 'data', 'sellers.json');
+const INVENTORY_FILE = path.join(__dirname, 'data', 'inventory.json');
 
 // Garantir que o diretório data existe
 const ensureDataDirectory = () => {
@@ -53,9 +56,90 @@ const saveTransactions = (transactions) => {
   }
 };
 
-// Carregar transações ao iniciar o servidor
+// Funções para carregar e salvar produtos
+const loadProducts = () => {
+  try {
+    ensureDataDirectory();
+    if (fs.existsSync(PRODUCTS_FILE)) {
+      const data = fs.readFileSync(PRODUCTS_FILE, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar produtos:', error);
+  }
+  return [];
+};
+
+const saveProducts = (products) => {
+  try {
+    ensureDataDirectory();
+    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2), 'utf8');
+    return true;
+  } catch (error) {
+    console.error('Erro ao salvar produtos:', error);
+    return false;
+  }
+};
+
+// Funções para carregar e salvar vendedores
+const loadSellers = () => {
+  try {
+    ensureDataDirectory();
+    if (fs.existsSync(SELLERS_FILE)) {
+      const data = fs.readFileSync(SELLERS_FILE, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar vendedores:', error);
+  }
+  return [];
+};
+
+const saveSellers = (sellers) => {
+  try {
+    ensureDataDirectory();
+    fs.writeFileSync(SELLERS_FILE, JSON.stringify(sellers, null, 2), 'utf8');
+    return true;
+  } catch (error) {
+    console.error('Erro ao salvar vendedores:', error);
+    return false;
+  }
+};
+
+// Funções para carregar e salvar inventário
+const loadInventory = () => {
+  try {
+    ensureDataDirectory();
+    if (fs.existsSync(INVENTORY_FILE)) {
+      const data = fs.readFileSync(INVENTORY_FILE, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar inventário:', error);
+  }
+  return [];
+};
+
+const saveInventory = (inventory) => {
+  try {
+    ensureDataDirectory();
+    fs.writeFileSync(INVENTORY_FILE, JSON.stringify(inventory, null, 2), 'utf8');
+    return true;
+  } catch (error) {
+    console.error('Erro ao salvar inventário:', error);
+    return false;
+  }
+};
+
+// Carregar dados ao iniciar o servidor
 let transactions = loadTransactions();
+let products = loadProducts();
+let sellers = loadSellers();
+let inventory = loadInventory();
 console.log(`📦 ${transactions.length} transações carregadas do arquivo`);
+console.log(`📦 ${products.length} produtos carregados do arquivo`);
+console.log(`📦 ${sellers.length} vendedores carregados do arquivo`);
+console.log(`📦 ${inventory.length} registros de inventário carregados do arquivo`);
 
 // Rotas
 
@@ -269,6 +353,403 @@ app.get('/api/kpis', (req, res) => {
 
   res.json(kpis);
 });
+// ============================================
+// PRODUTOS - CRUD
+// ============================================
+
+// Listar todos os produtos
+app.get('/api/products', (req, res) => {
+  res.json(products);
+});
+
+// Criar novo produto
+app.post('/api/products', (req, res) => {
+  const { name, description, sku, price, category } = req.body;
+
+  if (!name || !sku) {
+    return res.status(400).json({ error: 'Campos obrigatórios: name, sku' });
+  }
+
+  // Verificar se SKU já existe
+  if (products.find(p => p.sku === sku)) {
+    return res.status(400).json({ error: 'SKU já existe' });
+  }
+
+  const product = {
+    id: uuidv4(),
+    name,
+    description: description || '',
+    sku,
+    price: price ? parseFloat(price) : 0,
+    category: category || 'Geral',
+    createdAt: new Date().toISOString()
+  };
+
+  products.push(product);
+  saveProducts(products);
+  res.status(201).json(product);
+});
+
+// Obter produto por ID
+app.get('/api/products/:id', (req, res) => {
+  const product = products.find(p => p.id === req.params.id);
+  if (!product) {
+    return res.status(404).json({ error: 'Produto não encontrado' });
+  }
+  res.json(product);
+});
+
+// Atualizar produto
+app.put('/api/products/:id', (req, res) => {
+  const index = products.findIndex(p => p.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Produto não encontrado' });
+  }
+
+  const { name, description, sku, price, category } = req.body;
+  
+  // Verificar se novo SKU já existe em outro produto
+  if (sku && sku !== products[index].sku) {
+    if (products.find(p => p.sku === sku && p.id !== req.params.id)) {
+      return res.status(400).json({ error: 'SKU já existe' });
+    }
+  }
+
+  products[index] = {
+    ...products[index],
+    name: name || products[index].name,
+    description: description !== undefined ? description : products[index].description,
+    sku: sku || products[index].sku,
+    price: price ? parseFloat(price) : products[index].price,
+    category: category || products[index].category,
+    updatedAt: new Date().toISOString()
+  };
+
+  saveProducts(products);
+  res.json(products[index]);
+});
+
+// Deletar produto
+app.delete('/api/products/:id', (req, res) => {
+  const index = products.findIndex(p => p.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Produto não encontrado' });
+  }
+
+  // Remover inventário relacionado ao produto
+  inventory = inventory.filter(i => i.productId !== req.params.id);
+  saveInventory(inventory);
+
+  products.splice(index, 1);
+  saveProducts(products);
+  res.status(204).send();
+});
+
+// ============================================
+// VENDEDORES - CRUD
+// ============================================
+
+// Listar todos os vendedores
+app.get('/api/sellers', (req, res) => {
+  res.json(sellers);
+});
+
+// Criar novo vendedor
+app.post('/api/sellers', (req, res) => {
+  const { name, email, phone, region } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ error: 'Campo obrigatório: name' });
+  }
+
+  // Verificar se email já existe
+  if (email && sellers.find(s => s.email === email)) {
+    return res.status(400).json({ error: 'Email já cadastrado' });
+  }
+
+  const seller = {
+    id: uuidv4(),
+    name,
+    email: email || '',
+    phone: phone || '',
+    region: region || '',
+    active: true,
+    createdAt: new Date().toISOString()
+  };
+
+  sellers.push(seller);
+  saveSellers(sellers);
+  res.status(201).json(seller);
+});
+
+// Obter vendedor por ID
+app.get('/api/sellers/:id', (req, res) => {
+  const seller = sellers.find(s => s.id === req.params.id);
+  if (!seller) {
+    return res.status(404).json({ error: 'Vendedor não encontrado' });
+  }
+  res.json(seller);
+});
+
+// Atualizar vendedor
+app.put('/api/sellers/:id', (req, res) => {
+  const index = sellers.findIndex(s => s.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Vendedor não encontrado' });
+  }
+
+  const { name, email, phone, region, active } = req.body;
+  
+  // Verificar se novo email já existe em outro vendedor
+  if (email && email !== sellers[index].email) {
+    if (sellers.find(s => s.email === email && s.id !== req.params.id)) {
+      return res.status(400).json({ error: 'Email já cadastrado' });
+    }
+  }
+
+  sellers[index] = {
+    ...sellers[index],
+    name: name || sellers[index].name,
+    email: email !== undefined ? email : sellers[index].email,
+    phone: phone !== undefined ? phone : sellers[index].phone,
+    region: region !== undefined ? region : sellers[index].region,
+    active: active !== undefined ? active : sellers[index].active,
+    updatedAt: new Date().toISOString()
+  };
+
+  saveSellers(sellers);
+  res.json(sellers[index]);
+});
+
+// Deletar vendedor
+app.delete('/api/sellers/:id', (req, res) => {
+  const index = sellers.findIndex(s => s.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Vendedor não encontrado' });
+  }
+
+  // Remover inventário relacionado ao vendedor
+  inventory = inventory.filter(i => i.sellerId !== req.params.id);
+  saveInventory(inventory);
+
+  sellers.splice(index, 1);
+  saveSellers(sellers);
+  res.status(204).send();
+});
+
+// ============================================
+// INVENTÁRIO - Controle de Estoque por Vendedor
+// ============================================
+
+// Listar todo o inventário (com filtros opcionais)
+app.get('/api/inventory', (req, res) => {
+  const { productId, sellerId } = req.query;
+  
+  let filteredInventory = inventory;
+  
+  if (productId) {
+    filteredInventory = filteredInventory.filter(i => i.productId === productId);
+  }
+  
+  if (sellerId) {
+    filteredInventory = filteredInventory.filter(i => i.sellerId === sellerId);
+  }
+  
+  // Enriquecer com dados de produto e vendedor
+  const enrichedInventory = filteredInventory.map(item => {
+    const product = products.find(p => p.id === item.productId);
+    const seller = sellers.find(s => s.id === item.sellerId);
+    
+    return {
+      ...item,
+      productName: product ? product.name : 'Produto não encontrado',
+      productSku: product ? product.sku : '',
+      sellerName: seller ? seller.name : 'Vendedor não encontrado'
+    };
+  });
+  
+  res.json(enrichedInventory);
+});
+
+// Obter estoque de um produto específico
+app.get('/api/inventory/product/:productId', (req, res) => {
+  const productInventory = inventory.filter(i => i.productId === req.params.productId);
+  
+  if (productInventory.length === 0) {
+    return res.json({
+      productId: req.params.productId,
+      totalQuantity: 0,
+      bySeller: []
+    });
+  }
+  
+  const totalQuantity = productInventory.reduce((sum, i) => sum + i.quantity, 0);
+  
+  const bySeller = productInventory.map(item => {
+    const seller = sellers.find(s => s.id === item.sellerId);
+    return {
+      ...item,
+      sellerName: seller ? seller.name : 'Vendedor não encontrado'
+    };
+  });
+  
+  res.json({
+    productId: req.params.productId,
+    totalQuantity,
+    bySeller
+  });
+});
+
+// Obter estoque de um vendedor específico
+app.get('/api/inventory/seller/:sellerId', (req, res) => {
+  const sellerInventory = inventory.filter(i => i.sellerId === req.params.sellerId);
+  
+  if (sellerInventory.length === 0) {
+    return res.json({
+      sellerId: req.params.sellerId,
+      totalProducts: 0,
+      products: []
+    });
+  }
+  
+  const productsWithStock = sellerInventory.map(item => {
+    const product = products.find(p => p.id === item.productId);
+    return {
+      ...item,
+      productName: product ? product.name : 'Produto não encontrado',
+      productSku: product ? product.sku : ''
+    };
+  });
+  
+  res.json({
+    sellerId: req.params.sellerId,
+    totalProducts: sellerInventory.length,
+    products: productsWithStock
+  });
+});
+
+// Adicionar ou atualizar estoque
+app.post('/api/inventory', (req, res) => {
+  const { productId, sellerId, quantity, operation = 'set' } = req.body;
+
+  if (!productId || !sellerId || quantity === undefined) {
+    return res.status(400).json({ error: 'Campos obrigatórios: productId, sellerId, quantity' });
+  }
+
+  // Verificar se produto existe
+  const product = products.find(p => p.id === productId);
+  if (!product) {
+    return res.status(404).json({ error: 'Produto não encontrado' });
+  }
+
+  // Verificar se vendedor existe
+  const seller = sellers.find(s => s.id === sellerId);
+  if (!seller) {
+    return res.status(404).json({ error: 'Vendedor não encontrado' });
+  }
+
+  // Buscar registro existente
+  const existingIndex = inventory.findIndex(
+    i => i.productId === productId && i.sellerId === sellerId
+  );
+
+  let newQuantity = parseFloat(quantity);
+
+  if (existingIndex !== -1) {
+    // Atualizar registro existente
+    if (operation === 'add') {
+      newQuantity = inventory[existingIndex].quantity + parseFloat(quantity);
+    } else if (operation === 'subtract') {
+      newQuantity = inventory[existingIndex].quantity - parseFloat(quantity);
+    }
+    // operation === 'set' usa newQuantity diretamente
+
+    if (newQuantity < 0) {
+      return res.status(400).json({ error: 'Quantidade não pode ser negativa' });
+    }
+
+    inventory[existingIndex] = {
+      ...inventory[existingIndex],
+      quantity: newQuantity,
+      updatedAt: new Date().toISOString()
+    };
+
+    saveInventory(inventory);
+    res.json(inventory[existingIndex]);
+  } else {
+    // Criar novo registro
+    if (newQuantity < 0) {
+      return res.status(400).json({ error: 'Quantidade não pode ser negativa' });
+    }
+
+    const inventoryItem = {
+      id: uuidv4(),
+      productId,
+      sellerId,
+      quantity: newQuantity,
+      createdAt: new Date().toISOString()
+    };
+
+    inventory.push(inventoryItem);
+    saveInventory(inventory);
+    res.status(201).json(inventoryItem);
+  }
+});
+
+// Deletar registro de inventário
+app.delete('/api/inventory/:id', (req, res) => {
+  const index = inventory.findIndex(i => i.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Registro de inventário não encontrado' });
+  }
+
+  inventory.splice(index, 1);
+  saveInventory(inventory);
+  res.status(204).send();
+});
+
+// Relatório de estoque total
+app.get('/api/inventory/report/summary', (req, res) => {
+  const summary = {
+    totalProducts: products.length,
+    totalSellers: sellers.length,
+    totalInventoryRecords: inventory.length,
+    productsSummary: [],
+    sellersSummary: []
+  };
+
+  // Resumo por produto
+  products.forEach(product => {
+    const productInventory = inventory.filter(i => i.productId === product.id);
+    const totalQuantity = productInventory.reduce((sum, i) => sum + i.quantity, 0);
+    const sellersWithStock = productInventory.length;
+
+    summary.productsSummary.push({
+      productId: product.id,
+      productName: product.name,
+      productSku: product.sku,
+      totalQuantity,
+      sellersWithStock
+    });
+  });
+
+  // Resumo por vendedor
+  sellers.forEach(seller => {
+    const sellerInventory = inventory.filter(i => i.sellerId === seller.id);
+    const totalProducts = sellerInventory.length;
+    const totalQuantity = sellerInventory.reduce((sum, i) => sum + i.quantity, 0);
+
+    summary.sellersSummary.push({
+      sellerId: seller.id,
+      sellerName: seller.name,
+      totalProducts,
+      totalQuantity
+    });
+  });
+
+  res.json(summary);
+});
+
 
 // ============================================
 // PLUGGY - Open Finance Integration

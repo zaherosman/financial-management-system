@@ -1,4 +1,4 @@
-/* Apptio Cloudability Style - Responsive & Mobile-First */
+/* IBM Carbon Design System - Pure Style */
 
 /* Reset & Base */
 * {
@@ -9,16 +9,15 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--apptio-bg-primary);
+  background-color: #f4f4f4;
   width: 100%;
   overflow-x: hidden;
 }
 
-/* Header Styles */
+/* Header Styles - IBM Carbon */
 .apptio-header {
-  background: white !important;
-  border-bottom: 1px solid var(--apptio-border);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  background: #161616 !important;
+  border-bottom: none;
   position: sticky;
   top: 0;
   z-index: 8000;
@@ -38,9 +37,9 @@
 }
 
 .apptio-logo-text {
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--apptio-text-primary);
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: #f4f4f4;
 }
 
 /* Hide logo text on mobile */
@@ -51,19 +50,18 @@
 }
 
 .apptio-header .cds--header__action {
-  color: var(--apptio-text-secondary);
+  color: #f4f4f4;
 }
 
 .apptio-header .cds--header__action:hover {
-  background-color: var(--apptio-bg-tertiary);
-  color: var(--apptio-orange);
+  background-color: #353535;
 }
 
-/* Sidebar Styles */
+/* Sidebar Styles - IBM Carbon */
 .apptio-sidenav {
-  background-color: white !important;
-  border-right: 1px solid var(--apptio-border);
-  padding-top: 1rem;
+  background-color: #262626 !important;
+  border-right: none;
+  padding-top: 0;
   position: fixed;
   top: 48px;
   left: 0;
@@ -82,29 +80,29 @@
   
   .apptio-sidenav[aria-hidden="false"] {
     transform: translateX(0);
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
   }
 }
 
 .apptio-sidenav .cds--side-nav__link {
-  color: var(--apptio-text-secondary);
-  border-radius: 6px;
-  margin: 0.25rem 0.75rem;
-  transition: all 0.2s ease;
-  font-weight: 500;
+  color: #f4f4f4;
+  border-radius: 0;
+  margin: 0;
+  transition: all 0.11s cubic-bezier(0.2, 0, 0.38, 0.9);
+  font-weight: 400;
 }
 
 .apptio-sidenav .cds--side-nav__link:hover {
-  background-color: var(--apptio-bg-tertiary);
-  color: var(--apptio-text-primary);
+  background-color: #353535;
+  color: #ffffff;
 }
 
 .apptio-sidenav .cds--side-nav__link--current,
 .apptio-sidenav .cds--side-nav__link[aria-current="page"] {
-  background-color: #fff5f0;
-  color: var(--apptio-orange);
+  background-color: #393939;
+  color: #ffffff;
   font-weight: 600;
-  border-left: 3px solid var(--apptio-orange);
+  border-left: 3px solid #0f62fe;
 }
 
 .apptio-sidenav .cds--side-nav__link--current::before {
@@ -115,9 +113,22 @@
   padding-left: 2.5rem;
 }
 
+.apptio-sidenav .cds--side-nav__menu {
+  background-color: #262626;
+}
+
+.apptio-sidenav .cds--side-nav__menu-item .cds--side-nav__link {
+  color: #c6c6c6;
+}
+
+.apptio-sidenav .cds--side-nav__menu-item .cds--side-nav__link:hover {
+  background-color: #353535;
+  color: #f4f4f4;
+}
+
 /* Content Area - Full Width & Responsive */
 .apptio-content {
-  background-color: var(--apptio-bg-primary);
+  background-color: #f4f4f4;
   flex: 1;
   width: 100%;
   min-height: calc(100vh - 48px);
@@ -134,7 +145,7 @@
 
 .apptio-container {
   width: 100%;
-  max-width: 1600px;
+  max-width: 1584px;
   margin: 0 auto;
   padding: 1rem;
   height: 100%;
@@ -143,7 +154,7 @@
 /* Tablet */
 @media (min-width: 768px) {
   .apptio-container {
-    padding: 1.5rem;
+    padding: 2rem;
   }
 }
 
@@ -154,55 +165,43 @@
   }
 }
 
-/* Page Header */
+/* Page Header - IBM Style */
 .apptio-page-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--apptio-border);
+  border-bottom: 1px solid #e0e0e0;
   gap: 1rem;
 }
 
 @media (min-width: 768px) {
   .apptio-page-header {
     align-items: center;
-    margin-bottom: 2rem;
   }
 }
 
 .apptio-page-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--apptio-text-primary);
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: #161616;
   margin: 0 0 0.25rem 0;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 @media (min-width: 768px) {
   .apptio-page-title {
-    font-size: 1.5rem;
-  }
-}
-
-@media (min-width: 1200px) {
-  .apptio-page-title {
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
 }
 
 .apptio-page-subtitle {
-  font-size: 0.8125rem;
-  color: var(--apptio-text-secondary);
+  font-size: 0.875rem;
+  color: #525252;
   margin: 0;
-  line-height: 1.4;
-}
-
-@media (min-width: 768px) {
-  .apptio-page-subtitle {
-    font-size: 0.875rem;
-  }
+  line-height: 1.5;
+  font-weight: 400;
 }
 
 /* View Styles */
@@ -222,47 +221,44 @@
   }
 }
 
-/* Widget/Card Styles */
+/* Widget/Card Styles - IBM Carbon */
 .apptio-widget {
-  background-color: white;
-  border: 1px solid var(--apptio-border);
-  border-radius: 8px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 0;
   margin-bottom: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: none;
   overflow: hidden;
   width: 100%;
 }
 
 @media (min-width: 768px) {
   .apptio-widget {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 }
 
 .apptio-widget-header {
   padding: 1rem 1rem;
-  border-bottom: 1px solid var(--apptio-border);
-  background-color: var(--apptio-bg-tertiary);
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 @media (min-width: 768px) {
   .apptio-widget-header {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1rem;
   }
 }
 
 .apptio-widget-title {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: var(--apptio-text-primary);
+  color: #161616;
   margin: 0;
-  line-height: 1.4;
-}
-
-@media (min-width: 768px) {
-  .apptio-widget-title {
-    font-size: 1rem;
-  }
+  line-height: 1.375;
 }
 
 .apptio-widget-content {
@@ -271,32 +267,31 @@
 
 @media (min-width: 768px) {
   .apptio-widget-content {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 }
 
-/* KPI Card Styles - Mobile First */
+/* KPI Card Styles - IBM Carbon */
 .apptio-kpi-card {
-  background: white;
-  border: 1px solid var(--apptio-border);
-  border-radius: 8px;
+  background: #ffffff;
+  border: none;
+  border-radius: 0;
   padding: 1rem;
   position: relative;
   overflow: hidden;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: all 0.11s cubic-bezier(0.2, 0, 0.38, 0.9);
+  box-shadow: none;
   width: 100%;
 }
 
 @media (min-width: 768px) {
   .apptio-kpi-card {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 }
 
 .apptio-kpi-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .apptio-kpi-card::before {
@@ -305,99 +300,80 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 4px;
 }
 
 .apptio-kpi-card.success::before {
-  background: var(--apptio-green);
+  background: #24a148;
 }
 
 .apptio-kpi-card.danger::before {
-  background: var(--apptio-red);
+  background: #da1e28;
 }
 
 .apptio-kpi-card.info::before {
-  background: var(--apptio-blue);
+  background: #0f62fe;
 }
 
 .apptio-kpi-card.warning::before {
-  background: var(--apptio-orange);
+  background: #f1c21b;
 }
 
 .apptio-kpi-label {
-  font-size: 0.6875rem;
-  color: var(--apptio-text-secondary);
+  font-size: 0.75rem;
+  color: #525252;
   margin-bottom: 0.5rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-@media (min-width: 768px) {
-  .apptio-kpi-label {
-    font-size: 0.75rem;
-  }
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .apptio-kpi-value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--apptio-text-primary);
-  line-height: 1.2;
+  font-size: 2rem;
+  font-weight: 300;
+  color: #161616;
+  line-height: 1.25;
   margin-bottom: 0.5rem;
   word-break: break-word;
 }
 
 @media (min-width: 768px) {
   .apptio-kpi-value {
-    font-size: 2rem;
+    font-size: 2.625rem;
   }
 }
 
 .apptio-kpi-change {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  font-weight: 500;
+  font-weight: 400;
   flex-wrap: wrap;
 }
 
-@media (min-width: 768px) {
-  .apptio-kpi-change {
-    font-size: 0.875rem;
-  }
-}
-
 .apptio-kpi-change.positive {
-  color: var(--apptio-green);
+  color: #24a148;
 }
 
 .apptio-kpi-change.negative {
-  color: var(--apptio-red);
+  color: #da1e28;
 }
 
 .apptio-kpi-change.neutral {
-  color: var(--apptio-text-secondary);
+  color: #525252;
 }
 
-/* Chart Container */
+/* Chart Container - IBM Style */
 .apptio-chart-widget {
-  background-color: white;
-  border: 1px solid var(--apptio-border);
-  border-radius: 8px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 0;
   padding: 1rem;
   margin-bottom: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: none;
   width: 100%;
   overflow-x: auto;
-}
-
-@media (min-width: 768px) {
-  .apptio-chart-widget {
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
 }
 
 .apptio-chart-header {
@@ -406,7 +382,7 @@
   gap: 0.5rem;
   margin-bottom: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--apptio-border-light);
+  border-bottom: 1px solid #e0e0e0;
 }
 
 @media (min-width: 768px) {
@@ -414,100 +390,59 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
   }
 }
 
 .apptio-chart-title {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--apptio-text-primary);
+  color: #161616;
   margin: 0;
 }
 
-@media (min-width: 768px) {
-  .apptio-chart-title {
-    font-size: 1.125rem;
-  }
-}
-
 .apptio-chart-subtitle {
-  font-size: 0.8125rem;
-  color: var(--apptio-text-secondary);
+  font-size: 0.875rem;
+  color: #525252;
   margin: 0.25rem 0 0 0;
+  font-weight: 400;
 }
 
-@media (min-width: 768px) {
-  .apptio-chart-subtitle {
-    font-size: 0.875rem;
-  }
-}
-
-/* Table Enhancements */
+/* Table Enhancements - IBM Style */
 .apptio-table-widget {
-  background-color: white;
-  border: 1px solid var(--apptio-border);
-  border-radius: 8px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 0;
   overflow: hidden;
   margin-top: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: none;
   width: 100%;
   overflow-x: auto;
 }
 
-@media (min-width: 768px) {
-  .apptio-table-widget {
-    margin-top: 1.5rem;
-  }
-}
-
 .apptio-table-header {
   padding: 1rem;
-  border-bottom: 1px solid var(--apptio-border);
-  background-color: var(--apptio-bg-tertiary);
-}
-
-@media (min-width: 768px) {
-  .apptio-table-header {
-    padding: 1.25rem 1.5rem;
-  }
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #ffffff;
 }
 
 .apptio-table-title {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: var(--apptio-text-primary);
+  color: #161616;
   margin: 0 0 0.25rem 0;
 }
 
-@media (min-width: 768px) {
-  .apptio-table-title {
-    font-size: 1rem;
-  }
-}
-
 .apptio-table-subtitle {
-  font-size: 0.8125rem;
-  color: var(--apptio-text-secondary);
+  font-size: 0.875rem;
+  color: #525252;
   margin: 0;
-}
-
-@media (min-width: 768px) {
-  .apptio-table-subtitle {
-    font-size: 0.875rem;
-  }
+  font-weight: 400;
 }
 
 /* Form Enhancements - Mobile First */
 .apptio-form {
   display: grid;
   gap: 1rem;
-}
-
-@media (min-width: 768px) {
-  .apptio-form {
-    gap: 1.5rem;
-  }
 }
 
 .apptio-form-row {
@@ -522,16 +457,17 @@
   }
 }
 
-/* Badge Styles */
+/* Badge Styles - IBM Carbon */
 .apptio-badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
+  padding: 0 0.5rem;
+  border-radius: 0;
   font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1;
+  font-weight: 400;
+  line-height: 1.125rem;
   white-space: nowrap;
+  height: 1.125rem;
 }
 
 .apptio-badge.success {
@@ -554,21 +490,14 @@
   color: #856404;
 }
 
-/* Empty State */
+/* Empty State - IBM Style */
 .apptio-empty-state {
   text-align: center;
-  padding: 2rem 1rem;
-  background: white;
-  border: 1px solid var(--apptio-border);
-  border-radius: 8px;
+  padding: 3rem 1rem;
+  background: #ffffff;
+  border: none;
+  border-radius: 0;
   margin-top: 1rem;
-}
-
-@media (min-width: 768px) {
-  .apptio-empty-state {
-    padding: 4rem 2rem;
-    margin-top: 1.5rem;
-  }
 }
 
 .apptio-empty-icon {
@@ -577,34 +506,17 @@
   opacity: 0.3;
 }
 
-@media (min-width: 768px) {
-  .apptio-empty-icon {
-    font-size: 4rem;
-  }
-}
-
 .apptio-empty-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--apptio-text-primary);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #161616;
   margin-bottom: 0.5rem;
 }
 
-@media (min-width: 768px) {
-  .apptio-empty-title {
-    font-size: 1.25rem;
-  }
-}
-
 .apptio-empty-text {
-  font-size: 0.8125rem;
-  color: var(--apptio-text-secondary);
-}
-
-@media (min-width: 768px) {
-  .apptio-empty-text {
-    font-size: 0.875rem;
-  }
+  font-size: 0.875rem;
+  color: #525252;
+  font-weight: 400;
 }
 
 /* Loading States */
@@ -612,30 +524,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
-  color: var(--apptio-text-secondary);
+  padding: 3rem;
+  color: #525252;
 }
 
-@media (min-width: 768px) {
-  .apptio-loading {
-    padding: 3rem;
-  }
-}
-
-/* Notification Enhancements */
+/* Notification Enhancements - IBM Carbon */
 .cds--inline-notification {
-  border-radius: 6px;
+  border-radius: 0;
   margin-bottom: 1rem;
-}
-
-.cds--inline-notification--error {
-  background-color: #f8d7da;
-  border-left-color: var(--apptio-red);
-}
-
-.cds--inline-notification--success {
-  background-color: #d4edda;
-  border-left-color: var(--apptio-green);
 }
 
 /* Grid System - Mobile First */
@@ -643,12 +539,6 @@
   display: grid;
   gap: 1rem;
   width: 100%;
-}
-
-@media (min-width: 768px) {
-  .apptio-grid {
-    gap: 1.5rem;
-  }
 }
 
 .apptio-grid-2,
@@ -687,45 +577,41 @@
 
 /* Carbon Design System Overrides for Mobile */
 .cds--btn {
-  min-height: 44px; /* Touch-friendly */
+  min-height: 48px;
 }
 
 .cds--text-input,
 .cds--select-input,
 .cds--text-area {
-  font-size: 16px; /* Prevent zoom on iOS */
+  font-size: 14px;
 }
 
-/* Scrollbar Styling */
+/* Scrollbar Styling - IBM Style */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--apptio-bg-secondary);
+  background: #f4f4f4;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--apptio-border);
-  border-radius: 4px;
+  background: #8d8d8d;
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--apptio-text-secondary);
+  background: #525252;
 }
 
-/* Touch-friendly spacing */
-@media (hover: none) and (pointer: coarse) {
-  .apptio-kpi-card {
-    padding: 1.25rem;
-  }
-  
-  .cds--btn {
-    min-height: 48px;
-  }
+/* IBM Carbon Typography */
+body {
+  font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Made with Bob - Responsive & Mobile-First */
+/* Made with Bob - IBM Carbon Design System */
 
 /* Made with Bob */
