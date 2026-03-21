@@ -148,7 +148,7 @@ function App() {
   };
 
   return (
-    <Theme theme="white">
+    <Theme theme="g100">
       <div className="apptio-app">
         {/* Header */}
         <Header aria-label="Financial Management System" className="apptio-header">
@@ -156,8 +156,8 @@ function App() {
             <div className="apptio-logo">
               <div className="apptio-logo-icon">
                 <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
-                  <path d="M16 2L2 9l14 7 14-7-14-7z" fill="#0f62fe"/>
-                  <path d="M2 23l14 7 14-7M2 16l14 7 14-7" stroke="#0f62fe" strokeWidth="2" fill="none"/>
+                  <path d="M16 2L2 9l14 7 14-7-14-7z" fill="#78a9ff"/>
+                  <path d="M2 23l14 7 14-7M2 16l14 7 14-7" stroke="#78a9ff" strokeWidth="2" fill="none"/>
                 </svg>
               </div>
               <span className="apptio-logo-text">Financial Management</span>
