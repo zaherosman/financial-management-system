@@ -26,7 +26,7 @@ import {
   WarningAlt,
   Document,
   ChartBubble,
-  Inventory,
+  Catalog,
   Package,
   UserMultiple
 } from '@carbon/icons-react';
@@ -223,7 +223,7 @@ function App() {
               </SideNavMenuItem>
             </SideNavMenu>
             <SideNavMenu
-              renderIcon={Inventory}
+              renderIcon={Catalog}
               title="Estoque"
               defaultExpanded={activeView === 'inventory' || activeView === 'products' || activeView === 'sellers'}
             >
@@ -231,7 +231,7 @@ function App() {
                 onClick={() => setActiveView('inventory')}
                 isActive={activeView === 'inventory'}
               >
-                <Inventory style={{ marginRight: '8px' }} />
+                <Catalog style={{ marginRight: '8px' }} />
                 Controle de Estoque
               </SideNavMenuItem>
               <SideNavMenuItem
