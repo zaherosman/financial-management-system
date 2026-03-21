@@ -58,6 +58,7 @@ function App() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [editingTransaction, setEditingTransaction] = useState(null);
+  const [showAddWidgetModal, setShowAddWidgetModal] = useState(false);
 
   // Carregar transações
   const loadTransactions = async () => {
@@ -316,18 +317,24 @@ function App() {
                   {activeView === 'transactions' && 'Transações'}
                 </h1>
               </div>
-              <div className="apptio-page-actions">
-                <Toggle
-                  id="cloudability-ui-toggle"
-                  labelText=""
-                  labelA="Default"
-                  labelB="Starred"
-                  size="sm"
-                />
-                <Button kind="primary" size="sm">
-                  Add Widget
-                </Button>
-              </div>
+              {activeView === 'home' && (
+                <div className="apptio-page-actions">
+                  <Toggle
+                    id="cloudability-ui-toggle"
+                    labelText=""
+                    labelA="Default"
+                    labelB="Starred"
+                    size="sm"
+                  />
+                  <Button
+                    kind="primary"
+                    size="sm"
+                    onClick={() => setShowAddWidgetModal(true)}
+                  >
+                    Add Widget
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Notifications */}
@@ -358,7 +365,13 @@ function App() {
                     <Loading description="Carregando KPIs..." withOverlay={false} />
                   </div>
                 )}
-                {!loading && <KPIDashboard kpis={kpis} />}
+                {!loading && (
+                  <KPIDashboard
+                    kpis={kpis}
+                    showAddWidgetModal={showAddWidgetModal}
+                    setShowAddWidgetModal={setShowAddWidgetModal}
+                  />
+                )}
               </div>
             )}
 

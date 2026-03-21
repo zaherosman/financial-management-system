@@ -5,11 +5,10 @@ import { ArrowUp, ArrowDown, Add, Close } from '@carbon/icons-react';
 import { kpiService } from '../services/api';
 import '@carbon/charts-react/styles.css';
 
-const KPIDashboard = ({ kpis: initialKpis }) => {
+const KPIDashboard = ({ kpis: initialKpis, showAddWidgetModal, setShowAddWidgetModal }) => {
   const [timeGrouping, setTimeGrouping] = useState('mensal');
   const [kpis, setKpis] = useState(initialKpis);
   const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   
   // Load widgets from localStorage on mount
   const loadWidgetsFromStorage = () => {
@@ -104,7 +103,9 @@ const KPIDashboard = ({ kpis: initialKpis }) => {
       addedAt: new Date().toISOString()
     };
     setActiveWidgets([...activeWidgets, newWidget]);
-    setIsModalOpen(false);
+    if (setShowAddWidgetModal) {
+      setShowAddWidgetModal(false);
+    }
   };
 
   const removeWidget = (widgetId) => {
@@ -541,11 +542,11 @@ const KPIDashboard = ({ kpis: initialKpis }) => {
 
       {/* Add Widget Modal */}
       <Modal
-        open={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
+        open={showAddWidgetModal || false}
+        onRequestClose={() => setShowAddWidgetModal && setShowAddWidgetModal(false)}
         modalHeading="Adicionar Widget"
         primaryButtonText="Cancelar"
-        onRequestSubmit={() => setIsModalOpen(false)}
+        onRequestSubmit={() => setShowAddWidgetModal && setShowAddWidgetModal(false)}
         size="lg"
       >
         <div style={{ padding: '1rem 0' }}>
